@@ -9,7 +9,8 @@ let session = require('express-session');
 app.use(session({secret: "Shh, its a secret!"})); //REPLACE THE SECRET WITH SOMETHING SECURE LATER
 
 let bodyParser = require("body-parser");
-app.use(bodyParser.json()); //body parser
+app.use(bodyParser.json()); //body parser for json
+app.use(bodyParser.urlencoded()); //body parser for urlencoded
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.kfvlj.mongodb.net/merry-tutor?retryWrites=true&w=majority`;
