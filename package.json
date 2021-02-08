@@ -23,6 +23,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "google-auth-library": "^6.1.6"
+    "google-auth-library": "^6.1.6",
+    "mongodb": "^3.6.4"
   }
 }
