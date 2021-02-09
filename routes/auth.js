@@ -12,7 +12,7 @@ let usersCollection;
 mongoClient.connect(err => {
     if (err) console.log(err);
     usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Auth-Middleware Connected to Users collection");
+    console.log("Auth Route Connected to Users collection");
 });
 
 /*

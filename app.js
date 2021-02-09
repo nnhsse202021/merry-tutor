@@ -21,7 +21,7 @@ let usersCollection;
 mongoClient.connect(err => {
     if (err) console.log(err);
     usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Auth Connected to Users collection");
+    console.log("Users Middleware Connected to Users collection");
 });
 app.use(async (req, res, next) => {
     req.user = await usersCollection.findOne({_id: req.session.userId});
