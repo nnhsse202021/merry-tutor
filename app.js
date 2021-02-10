@@ -35,6 +35,7 @@ app.use(async (req, res, next) => {
 //routes
 app.use("/student", require("./routes/student.js")); //anything send to /student... will be sent to student.js
 app.use("/tutor", require("./routes/tutor.js"));
+app.use("/summary", require("./routes/summary.js"));
 app.use("/auth", require("./routes/auth.js"));
 
 app.get("/", (req,res) => {
