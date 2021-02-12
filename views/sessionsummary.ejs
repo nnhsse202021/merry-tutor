@@ -5,24 +5,57 @@
     <body>
         <h1>Merry Tutor Session Summary</h1>
         <form method="POST">
-            <label for="tutor-fname">Tutor First Name:</label><br>
-            <input type="text" ide = "tutor-fname" name ="tutor-fname"><br>
-            <!--
-                <label for="tutor-lname">Tutor Last Name:</label><br>
-                <input type="text" ide = "tutor-lname" name ="tutor-lname"><br>
-                tutor id*
-                tutee id*
-                shadowing tutor id 
-                tutee grade level for current school year - string
-                is the tutee from the alive center - radio yes/no
-                session date (dropdown or radio boxes)* - date
-                parent email* - string
-                is the tutee new to the MT?* - radio y/n
-                    
-                what they learned - long string
-                what they should work on at home - long string
-                what they should work on during the next session - long string
-            -->
+            <label for="session-date">Session Date:</label>
+            <input type="date" name="session-date" id="session-date"><br>
+            <label for="tutor-name">Tutor Name: (Last, First)</label>
+            <input type="text" id ="tutor-name" name="tutor-name"><br>
+            <label for="tutee-name">Tutee Name: (Last, First)</label>
+            <input type="text" id ="tutee-name" name="tutee-name"><br>
+            <label for="shadow-name">Shadowing Tutor: (Last, First)</label>
+            <input type="text" id="shadow-name" name="shadow-name"><br>
+            <label for="tutee-grade">Tutee Grade</label>
+            <select id="tutee-grade" name="tutee-grade">
+                <option selected>No grade Selected</option>
+                <option value="K">K</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select><br>
+            <label for="from-alive">Is the tutee from the Alive Center?</label>
+            <div id="from-alive">
+                <input type="radio" name="from-alive" id="from-alive-yes">
+                <label for="from-alive-yes">Yes</label>
+            </div>
+            <div id="from-alive">
+                <input type="radio" name="from-alive" id="from-alive-no">
+                <label for="from-alive-no">No</label>
+            </div><br>
+            <label for="parent-email">Parent Email:</label>
+            <input type="text" name="parent-email" id="parent-email"><br>
+            <label for="new-tutee">Has the student tutored with us before?</label>
+            <div id="new-tutee">
+                <input type="radio" name="new-tutee" id="new-tutee-yes">
+                <label for="new-tutee-yes">Yes</label>
+            </div>
+            <div id="new-tutee">
+                <input type="radio" name="new-tutee" id="new-tutee-no">
+                <label for="new-tutee-no">No</label>
+            </div><br>
+            <label for="what-they-learned">What did the tutee learn during the session?</label><br>
+            <input type="text" name="what-they-learned" id="what-they-learned" ><br>
+            <label for="at-home-suggestion">What should the tutee work on before the next session as homework</label><br>
+            <input type="text" name="at-home-suggestion" id="at-home-suggestion" ><br>
+            <label for="next-session-suggestion">What should the tutee work on during the next session?</label><br>
+            <input type="text" name="next-session-suggestion" id="next-session-suggestion" ><br>
             <input type="submit" value="Submit">
         </form>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
