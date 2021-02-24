@@ -21,7 +21,7 @@ router.get("/new", (req,res) => {
 
 router.post("/new", (req,res) => {
     let submission = req.body;
-    summaryCollection.insertOne(submission);
+    summaryCollection.insertOne(submission); //instead, create new js object format (refer to doc) and THEN insert into collection
 }) 
 
 module.exports = router;
