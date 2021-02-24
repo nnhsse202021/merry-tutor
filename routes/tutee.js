@@ -15,7 +15,7 @@ mongoClient.connect(err => {
 })
 
 
-router.get("/:_id", (req,res) => {
+router.get("/:_id", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
         return;
@@ -25,9 +25,11 @@ router.get("/:_id", (req,res) => {
     }
 
     //only auth'd users are past this point
-    let tutee = usersCollection.find(ObjectID(req.params._id));
-    let summaries = summariesCollection.find({tutee_id: req.params._id}).toArray();
-    res.render("tutee", {user: req.user, summaries: await summaries, tutee: await tutee});
+    let tutee = await usersCollection.findOne({_id: new ObjectID(req.params._id)});
+    tutee.name.first = tutee.name.first.split(" ").map(x => x[0].toUpperCase() + x.slice(1)).join(" ");
+    tutee.name.last = tutee.name.last.split(" ").map(x => x[0].toUpperCase() + x.slice(1)).join(" ");
+    let sessionData = await summariesCollection.find({tutee_id: req.params._id}).toArray();
+    res.render("tutee", {user: req.user, summaries: sessionData, tutee: tutee});
 });
 
 module.exports = router;

@@ -29,7 +29,6 @@ mongoClient.connect(err => {
 //app.use takes a function that is added to the path of a request. When we call next() it goes to the next function in the path 
 app.use(async (req, res, next) => {
     if(req.session.userId) req.user = await usersCollection.findOne(ObjectID(req.session.userId)); //if there is a user id, set req.user to that user data object
-    console.log(req.user)
     next();
 })
 
