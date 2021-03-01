@@ -36,14 +36,14 @@ router.post("/new", (req, res) => {
     Functions that return a promise can have await put before them and code execution will wait for the promise to resolve and 
     return its value you can make an arrow function async by turning `() => {...}` into `async () => {...}`
     */
-    /* async */ function find_id (name){
+    async function find_id (name){
         let tutor_name = formData["tutor-name"];
         let [last, first] = name.replace(", ", ",").split(",");
         // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
-        let userDoc = /*await*/ usersCollection.findOne(
+        let userDoc = await usersCollection.findOne(
             { name: { 
-                first: first.toLowerCase(), 
-                last: last.toLowerCase() 
+                first: (first ?? "" ).toLowerCase(),
+                last: (last ?? "").toLowerCase()
             }});
         console.log(userDoc); // log the document of queried user
         if(userDoc === null){
