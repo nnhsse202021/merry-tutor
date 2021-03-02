@@ -39,7 +39,7 @@ app.use("/summary", require("./routes/summary.js"));
 app.use("/auth", require("./routes/auth.js"));
 
 app.get("/", (req,res) => {
-    res.render("index.ejs", {});
+    res.render("index.ejs", {user: req.user});
 })
 
 app.get("/login", (req,res) => {
