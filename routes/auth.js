@@ -40,7 +40,7 @@ router.post("/v1/google", async (req, res) => { //login.js sends the id_token to
         audience: CLIENT_ID
     });
     let {sub, email, given_name, family_name} = ticket.getPayload(); //get the user data we care about from the id_token
-    let user = getOrMakeUser(sub, email, given_name.toLowerCase(), family_name.toLowerCase()); //call this function to get a reference to the user that's stored in the database
+    let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase()); //call this function to get a reference to the user that's stored in the database
     req.session.userId = user._id; //sets "userId" on the session to the id of the user in the database
     res.status(201);
     res.json({});
@@ -55,8 +55,8 @@ Matching priority:
 */
 async function getOrMakeUser(google_sub, email, given_name, family_name) {
     let user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
-    if (!user) user = await usersCollection.findOne({email: email}); //see if a user exists with their email
-    if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}}); //see if a user exists with their name
+    if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
+    if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
     if (!user) { //we are certain the user doesn't exist yet, let's make them from scratch
         user = {
             // _id generated when .insertOne is called with _id undefined
@@ -79,7 +79,6 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
             email: email,
             google_sub: google_sub
         });
-        
         await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
     return user; //return the user (either newly made or updated)
