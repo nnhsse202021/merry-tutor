@@ -6,13 +6,14 @@
         <h1>Merry Tutor Session Summary</h1>
         <form method="POST">
             <label class="form-label" for="session-date">Session Date:</label>
-            <input type="date" name="session-date" id="session-date"><br>
+            <% console.log(typeof formData != 'undefined' ? formData : "no data") %>
+            <input type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '2021-01-01' %>"><br>
             <label class="form-label" for="tutor-name">Tutor Name: (Last, First)</label>
-            <input type="text" id ="tutor-name" name="tutor-name"><br>
+            <input type="text" id ="tutor-name" name="tutor-name" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>"><br>
             <label class="form-label" for="tutee-name">Tutee Name: (Last, First)</label>
-            <input type="text" id ="tutee-name" name="tutee-name"><br>
+            <input type="text" id ="tutee-name" name="tutee-name" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"><br>
             <label class="form-label" for="shadow-name">Shadowing Tutor: (Last, First)</label>
-            <input type="text" id="shadow-name" name="shadow-name"><br>
+            <input type="text" id="shadow-name" name="shadow-name" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>"><br>
             <label class="form-label" for="tutee-grade">Tutee Grade</label>
             <select id="tutee-grade" name="tutee-grade">
                 <option selected>No grade Selected</option>
@@ -30,33 +31,18 @@
                 <option value="11">11</option>
                 <option value="12">12</option>
             </select><br>
-            <label class="form-label" for="from-alive">Is the tutee from the Alive Center?</label>
-            <div id="from-alive">
-                <input type="radio" name="from-alive" id="from-alive-yes">
-                <label for="from-alive-yes">Yes</label>
-            </div>
-            <div id="from-alive">
-                <input type="radio" name="from-alive" id="from-alive-no">
-                <label for="from-alive-no">No</label>
-            </div><br>
-            <label class="form-label" for="parent-email">Parent Email:</label>
-            <input class="form-control" type="text" name="parent-email" id="parent-email"><br>
-            <label class="form-label" for="new-tutee">Has the student tutored with us before?</label>
-            <div id="new-tutee">
-                <input type="radio" name="new-tutee" id="new-tutee-yes">
-                <label for="new-tutee-yes">Yes</label>
-            </div>
-            <div id="new-tutee">
-                <input type="radio" name="new-tutee" id="new-tutee-no">
-                <label for="new-tutee-no">No</label>
-            </div><br>
-            <label class="form-label" for="what-they-learned">What did the tutee learn during the session?</label><br>
-            <input class="form-control" type="text" name="what-they-learned" id="what-they-learned" ><br>
+            <% if (typeof formData != 'undefined') {%>
+                <script>
+                    document.querySelector("#tutee-grade").value = <%= formData['tutee-grade'] %> || document.querySelector("#tutee-grade").value
+                </script>
+            <% } %>
+            <label class="form-label" for="what-they-learned" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>">What did the tutee learn during the session?</label><br>
+            <input class="form-control" type="text" name="what-they-learned" id="what-they-learned" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>"><br>
             <label class="form-label" for="at-home-suggestion">What should the tutee work on before the next session as homework</label><br>
-            <input class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" ><br>
+            <input class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" value="<%= typeof formData != 'undefined' ? formData['at-home-suggestion'] : '' %>"><br>
             <label class="form-label" for="next-session-suggestion">What should the tutee work on during the next session?</label><br>
-            <input class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" rows="3"><br>
-            <input type="submit" name="submit" value="Submit"> <!--not sure about this line (2/24/2021)-->
+            <input class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" value="<%= typeof formData != 'undefined' ? formData['next-session-suggestion'] : '' %>" rows="3"><br>
+            <input type="submit" value="Submit">
         </form>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     </body>
