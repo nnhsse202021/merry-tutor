@@ -14,4 +14,5 @@ Node.js can be installed here: https://nodejs.org/en/download/
 1. Clone the project repository and open in VSCode
 2. Open a terminal window and use "npm i" to install the packages
 3. Once packages are installed, use "npm start" to run the application
-4. Navigate to localhost:8080 (or whatever port is used) to see the app running in a web browser
+4. Navigate to localhost:8080 to see the app running in a web browser
+5. Use "CTRL + c" to stop the application run
