@@ -7,7 +7,7 @@
         <form method="POST">
             <label class="form-label" for="session-date">Session Date:</label>
             <% console.log(typeof formData != 'undefined' ? formData : "no data") %>
-            <input type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '2021-01-01' %>"><br>
+            <input type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>"><br>
             <label class="form-label" for="tutor-name">Tutor Name: (Last, First)</label>
             <input type="text" id ="tutor-name" name="tutor-name" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>"><br>
             <label class="form-label" for="tutee-name">Tutee Name: (Last, First)</label>
