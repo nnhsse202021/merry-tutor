@@ -31,14 +31,14 @@ router.post("/new", async (req, res) => {
     let formData = req.body; //req.body is a js object of the form
     console.log(formData);
 
-    // if shadowing tutor is null, set shadow_id as null
-
     // create js object to be inserted into document
     let formObj = {
-        date: Date.parse(formData["session-date"]), // same format as returned by Date.now(),
-        tutor_id: await find_id(formData["tutor-name"]), //string
-        tutee_id: await find_id(formData["tutee-name"]), //string, // somehow attach parent email
-        shadow_id: await find_id(formData["shadow-name"]), //string, (optional)
+        date: Date.parse(formData["session-date"]),
+        tutor_id: await find_id(formData["tutor-name"]), 
+        tutee_id: await find_id(formData["tutee-name"]), // somehow attach parent email
+        shadow_id: await find_id(formData["shadow-name"]),
+        subject: formData["subject"],
+
         fields: {
             what_they_learned: formData["what-they-learned"],
             homework: formData["at-home-suggestion"],

@@ -36,7 +36,15 @@
                     document.querySelector("#tutee-grade").value = <%= formData['tutee-grade'] %> || document.querySelector("#tutee-grade").value
                 </script>
             <% } %>
-            <label class="form-label" for="subject" >Subject Tutored</label>
+            <!--change to radio if want to include other option-->
+            <!--
+            <radio id="subject" value="math">Math</radio>
+            <radio id="subject" value="science">Science</radio>
+            <radio id="subject" value="social-studies">Social Studies</radio>
+            <radio id="subject" value="english">English</radio>
+            <radio id="subject" value="other">Other</radio> <-- make text input with variable value input
+            -->
+            <label class="form-label" for="subject">Subject Tutored</label> 
             <select name="subject" id="subject">
                 <option selected>No subject selected</option>
                 <option value="math">Math</option>
