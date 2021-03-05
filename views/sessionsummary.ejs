@@ -16,7 +16,7 @@
             <input type="text" id="shadow-name" name="shadow-name" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>"><br>
             <label class="form-label" for="tutee-grade">Tutee Grade</label>
             <select id="tutee-grade" name="tutee-grade">
-                <option selected>No grade Selected</option>
+                <option selected>No grade selected</option>
                 <option value="K">K</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -34,6 +34,19 @@
             <% if (typeof formData != 'undefined') {%>
                 <script>
                     document.querySelector("#tutee-grade").value = <%= formData['tutee-grade'] %> || document.querySelector("#tutee-grade").value
+                </script>
+            <% } %>
+            <label class="form-label" for="subject" >Subject Tutored</label>
+            <select name="subject" id="subject">
+                <option selected>No subject selected</option>
+                <option value="math">Math</option>
+                <option value="science">Science</option>
+                <option value="social-studies">Social Studies</option>   
+                <option value="english">English</option>
+            </select><br>
+            <% if (typeof formData != 'undefined') {%>
+                <script>
+                    document.querySelector("#subject").value = <%= formData['subject'] %> || document.querySelector("#subject").value
                 </script>
             <% } %>
             <label class="form-label" for="what-they-learned" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>">What did the tutee learn during the session?</label><br>
