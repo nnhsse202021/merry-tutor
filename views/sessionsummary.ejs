@@ -5,28 +5,26 @@
     <body>
         <h1>Merry Tutor Session Summary</h1>
         <form method="POST">
-            <div class="form-group">
-                <label class="form-label" for="session-date">Session Date:</label>
-                <% console.log(typeof formData != 'undefined' ? formData : "no data") %>
+            <div class="mb-3">
+                <label class="form-label" for="session-date">Session Date</label>
                 <input class="form-control" type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>" required><br>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="tutor-name">Tutor Name:</label>
-                <input class="form-control" type="text" id ="tutor-name" name="tutor-name"  placeholder="Last, First" aria-describedby="tutor-name-help" v
-                alue="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
+            <div class="mb-3">
+                <label class="form-label" for="tutor-name">Tutor Name</label>
+                <input class="form-control" type="text" id ="tutor-name" name="tutor-name"  placeholder="Last, First" aria-describedby="tutor-name-help" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
                 <small id="tutor-name-help" class="form-text text-muted">YOU are the tutor. Please put your full name.</small><br>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="tutee-name">Tutee Name:</label>
-                <input class="form-control" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" 
-                value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+            <div class="mb-3">
+                <label class="form-label" for="tutee-name">Tutee Name</label>
+                <input class="form-control" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
                 <small id="tutee-name-help" class="form-text text-muted">The person you tutored is the tutee. Please put their full name below.</small><br>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="shadow-name">Shadowing Tutor:</label>
-                <input class="form-control" type="text" id="shadow-name" name="shadow-name" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>" placeholder="Last, First"><br>
+            <div class="mb-3">
+                <label class="form-label" for="shadow-name">Shadowing Tutor</label>
+                <input class="form-control" type="text" id="shadow-name" name="shadow-name" placeholder="Last, First" aria-describedby="shadow-name-help" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>">
+                <small id="shadow-name-help" class="form-text text-muted">If there was a new tutor shadowing your session, please show them how to fill out this session summary form and put their full name.</small><br>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="tutee-grade">Tutee Grade</label>
                 <select class=form-control" id="tutee-grade" name="tutee-grade" required>
                     <option selected>No grade selected</option>
@@ -69,18 +67,27 @@
                 </script>
             <% } %>
 
-            <div class="form-group">
+            
+            <!--how long was the session?
+            How long was this session? (closest possible option) *
+            If the session is an hour or longer, make sure you and the tutee take a break!
+            30 minutes, 45 minutes, 1 hour, 1 hour 30 minutes, 2 hours, 2 hours 30 minutes, 3 hours
+            -->
+
+            <div class="mb-3">
                 <label class="form-label" for="what-they-learned" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>">What did the tutee learn during the session?</label><br>
-                <input class="form-control" type="text" name="what-they-learned" id="what-they-learned" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>"><br>
-                <small id="what-they-learned-help" class="form-text text-muted"></small>
+                <input class="form-control" type="text" name="what-they-learned" id="what-they-learned" aria-describedby="what-they-learned-help" value="<%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %>">
+                <small id="what-they-learned-help" class="form-text text-muted">Answer with at least 2-3 sentences, clearly describing specifics of the tutoring session.</small><br>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="at-home-suggestion">What should the tutee work on before the next session as homework</label><br>
-                <input class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" value="<%= typeof formData != 'undefined' ? formData['at-home-suggestion'] : '' %>"><br>
+            <div class="mb-3">
+                <label class="form-label" for="at-home-suggestion">What are some suggested steps until the next tutoring session? Any suggested homework?</label><br>
+                <input class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" aria-describedby="at-home-suggestion-help" value="<%= typeof formData != 'undefined' ? formData['at-home-suggestion'] : '' %>">
+                <small id="at-home-suggestion-help" class="form-text text-muted">General encouragement is acceptable as well.</small><br>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label class="form-label" for="next-session-suggestion">What should the tutee work on during the next session?</label><br>
-                <input class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" value="<%= typeof formData != 'undefined' ? formData['next-session-suggestion'] : '' %>" rows="3"><br>
+                <input class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" aria-describedby="at-home-suggestion-help" value="<%= typeof formData != 'undefined' ? formData['next-session-suggestion'] : '' %>" rows="3">
+                <small id="next-session-suggestion" class="form-text text-muted">What concepts should the next tutor work on at the next session? If not applicable, put "N/A".</small><br>
             </div>
             
             <input type="submit" value="Submit">
