@@ -43,9 +43,14 @@ router.post("/v1/google", async (req, res) => { //login.js sends the id_token to
     let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase()); //call this function to get a reference to the user that's stored in the database
     req.session.userId = user._id; //sets "userId" on the session to the id of the user in the database
     res.status(201);
-    res.json({});
+    res.json(user);
 })
 
+router.post("/v1/newUser", async (req, res) => {
+    if (!req.user || req.user.roles.length != 0) return;
+    let newUserData = req.body;
+    
+})
 /*
 Return + update a user if match in database otherwise make a new user, add it to the database and return it
 Matching priority:

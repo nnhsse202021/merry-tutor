@@ -1,5 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
+
+#login-container {
+    height: calc(100vh - 83px); /* navbar is 83px */
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Box that contains each login card */
+#slider-box {
+    border: 1px solid var(--mt-gold);
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 575px;
+    height: 100%;
+    max-width: 448px;
+    width: 100%;
+}
+#slider-box hr {
+    color: var(--mt-gray);
+}
+#slider-box > div {
+    height: 100%;
+    text-align: center;
+}
+/* styling for all login cards */
+.login-text {
+    padding: 5px 0 0 0;
+}
+.login-text h2 {
+    color: var(--mt-red);
+}
+.login-text h1 {
+    color: var(--mt-black);
+}
+.signin-opts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    padding: 25px 0;
+}
+.signin-opts > * {
+    margin-bottom: 15px;
+}
+.signin-opts > button {
+    background: var(--mt-orange-white);
+    color: var(--mt-red);
+    font-size: 24px;
+    border: 1px solid var(--mt-red);
+    padding: 5px;
+    border-radius: 5px;
+}
+/* Google Login Button */
+
 #google-login {
     border: 1px solid transparent;
     background: #fff;
