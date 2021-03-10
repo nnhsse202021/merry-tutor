@@ -6,31 +6,33 @@
         <!--
             Logo
         -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/#">
             <img src="./img/merrytutorlogo.png" alt="" width="81" height="57">
-        </a>
-
+        </a> 
+        
+        <ul class="nav">
+            <!--
+                Links
+            -->
+            <li class="nav-item">
+                <a class="nav-link" href="/summary/new">Submit a Session</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">View Session Summary</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Sign Up</a>
+            </li>
+        </ul>
         <!--
-            Links
+            Tutee Search Form
         -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="./summary/new">Submit a Session</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./tutee/<%= typeof user == "object" ? user._id : ""%>">View Session Summary</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./login">Sign Up</a>
-                </li>
-            </ul>
-        </div>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search for a Tutee">
+            <button class="btn btn-primary mb-2" type="submit">Search</button> <!-- why is this not going inline with the search box????-->
+        </form>
     </div>
 </nav>
