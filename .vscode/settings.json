@@ -1,0 +1,6 @@
+{
+    "emmet.includeLanguages": {
+        "ejs": "html"
+    },
+    "files.autoSave": "afterDelay"
+}

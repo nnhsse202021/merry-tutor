@@ -38,6 +38,7 @@ router.post("/new", async (req, res) => {
         tutee_id: await find_id(formData["tutee-name"]), // somehow attach parent email
         shadow_id: await find_id(formData["shadow-name"]),
         subject: formData["subject"],
+        session_duration: formData["session-duration"],
 
         fields: {
             what_they_learned: formData["what-they-learned"],
@@ -46,6 +47,7 @@ router.post("/new", async (req, res) => {
         }
     }
     console.log(formObj)
+    console.log(formObj.subject)
     if(formObj.tutor_id && formObj.tutee_id){    // validate for tutor_id and tutee_id
         summaryCollection.insertOne(formObj);
         console.log("1 document inserted");

@@ -1,0 +1,45 @@
+<!--Range Bubble Feature (Author: Chris Coyier, css-tricks.com)-->
+<style>
+    .bubble {
+        background: maroon;
+        color: white;
+        padding: 4px 12px;
+        position: absolute;
+        border-radius: 4px;
+        left: 50%;
+        transform: translateX(-50%) translateY(90%);
+    }
+    .bubble::after{
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: maroon;
+        top: -1px;
+        left: 50%;
+    }
+</style>
+<script type="text/javascript">
+    const allRanges = document.querySelectorAll(".range-wrap");
+    console.log(allRanges)
+    allRanges.forEach(wrap => {
+        const range = wrap.querySelector(".form-range");
+        const bubble = wrap.querySelector(".bubble");
+
+        range.addEventListener("input", () => {
+            setBubble(range, bubble);
+        });
+        setBubble(range, bubble);
+    });
+
+    function setBubble(range, bubble) {
+        const val = range.value;
+        const min = range.min ? range.min : 0;
+        const max = range.max ? range.max : 100;
+        const newVal = Number(((val - min) * 100) / (max - min));
+        bubble.innerHTML = val + " Hour(s)";
+
+        // Sorta magic numbers based on size of the native UI thumb
+        bubble.style.left = `calc(${newVal}% + (${7.5 - newVal * 0.15}px))`;
+    }
+</script>
