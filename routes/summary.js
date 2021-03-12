@@ -29,7 +29,6 @@ router.get("/new", (req, res) => {
 
 router.post("/new", async (req, res) => {
     let formData = req.body; //req.body is a js object of the form
-    console.log(formData);
 
     // create js object to be inserted into document
     let formObj = {
@@ -46,11 +45,8 @@ router.post("/new", async (req, res) => {
             next_time: formData["next-session-suggestion"]
         }
     }
-    console.log(formObj)
-    console.log(formObj.subject)
     if(formObj.tutor_id && formObj.tutee_id){    // validate for tutor_id and tutee_id
         summaryCollection.insertOne(formObj);
-        console.log("1 document inserted");
         res.redirect("../");
     } else { // invalid form 
         // if invalid, alert user, keep form data
@@ -74,12 +70,10 @@ async function find_id(name) {
                 last: (last ?? "").toLowerCase()
             }
         });
-    console.log(userDoc); // log the document of queried user
     if (!userDoc) {
         return undefined;
     }
     user_id = userDoc["_id"];
-    console.log(user_id) // log user id
     return user_id;
 }
 
