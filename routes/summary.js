@@ -29,26 +29,24 @@ router.get("/new", (req, res) => {
 
 router.post("/new", async (req, res) => {
     let formData = req.body; //req.body is a js object of the form
-    console.log(formData);
-
-    // if shadowing tutor is null, set shadow_id as null
 
     // create js object to be inserted into document
     let formObj = {
-        date: Date.parse(formData["session-date"]), // same format as returned by Date.now(),
-        tutor_id: await find_id(formData["tutor-name"]), //string
-        tutee_id: await find_id(formData["tutee-name"]), //string, // somehow attach parent email
-        shadow_id: await find_id(formData["shadow-name"]), //string, (optional)
+        date: Date.parse(formData["session-date"]),
+        tutor_id: await find_id(formData["tutor-name"]), 
+        tutee_id: await find_id(formData["tutee-name"]), // somehow attach parent email
+        shadow_id: await find_id(formData["shadow-name"]),
+        subject: formData["subject"],
+        session_duration: formData["session-duration"],
+
         fields: {
             what_they_learned: formData["what-they-learned"],
             homework: formData["at-home-suggestion"],
             next_time: formData["next-session-suggestion"]
         }
     }
-    console.log(formObj)
     if(formObj.tutor_id && formObj.tutee_id){    // validate for tutor_id and tutee_id
         summaryCollection.insertOne(formObj);
-        console.log("1 document inserted");
         res.redirect("../");
     } else { // invalid form 
         // if invalid, alert user, keep form data
@@ -72,12 +70,10 @@ async function find_id(name) {
                 last: (last ?? "").toLowerCase()
             }
         });
-    console.log(userDoc); // log the document of queried user
     if (!userDoc) {
         return undefined;
     }
     user_id = userDoc["_id"];
-    console.log(user_id) // log user id
     return user_id;
 }
 
