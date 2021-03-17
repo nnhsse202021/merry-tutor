@@ -57,7 +57,18 @@ router.post("/v1/newUser", async (req, res) => {
             let child_id = await findIdByEmail(newUserData.existingChildEmail);
             if (child_id) user.children.push(String(child_id));
         } else if (newUserData.newChildData) {
-            getOrMakeUser(null, newUserData.newChildData.email, newUserData.newChildData.name.first, newUserData.newChildData.name.last)
+            let child = {
+                name: {
+                    first: (newUserData.newChildData.name.first || "").toLowerCase(),
+                    last: (newUserData.newChildData.name.last || "").toLowerCase(),   
+                },
+                email: newUserData.newChildData.email,
+                google_sub: null,
+                roles: ["tutee"],
+                children: []
+            }
+            user.children.push(String((await usersCollection.insertOne(child)).ops[0]._id));
+            await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
         } 
     } else {
         user.roles.push("tutee");
