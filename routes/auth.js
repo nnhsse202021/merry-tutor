@@ -49,7 +49,22 @@ router.post("/v1/google", async (req, res) => { //login.js sends the id_token to
 router.post("/v1/newUser", async (req, res) => {
     if (!req.user || req.user.roles.length != 0) return;
     let newUserData = req.body;
-    
+    let user = req.user;
+    console.log(newUserData);
+    if (newUserData.isParent) {
+        user.roles.push("parent");
+        if (newUserData.existingChildEmail) {
+            let child_id = await findIdByEmail(newUserData.existingChildEmail);
+            if (child_id) user.children.push(String(child_id));
+        } else if (newUserData.newChildData) {
+            getOrMakeUser(null, newUserData.newChildData.email, newUserData.newChildData.name.first, newUserData.newChildData.name.last)
+        } 
+    } else {
+        user.roles.push("tutee");
+        console.log(newUserData.parentEmails) // we can send them an email, or do something to allow them to make an account
+    }
+    await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
+    res.json(true);
 })
 /*
 Return + update a user if match in database otherwise make a new user, add it to the database and return it
@@ -59,7 +74,7 @@ Matching priority:
 3. name (first and last)
 */
 async function getOrMakeUser(google_sub, email, given_name, family_name) {
-    let user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
+    if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
     if (!user) { //we are certain the user doesn't exist yet, let's make them from scratch
@@ -88,4 +103,15 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
     }
     return user; //return the user (either newly made or updated)
 }
+
+async function findIdByEmail(email) {
+    // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
+    let userDoc = await usersCollection.findOne({email:email});
+    if (!userDoc) {
+        return undefined;
+    }
+    user_id = userDoc["_id"];
+    return user_id;
+}
+
 module.exports = router;

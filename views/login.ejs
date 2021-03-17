@@ -33,6 +33,29 @@
                         <button id="role-parent">Parent</button>
                     </div>
                 </div>
+                <div id="parent-tutee-dialog" style="display:none">
+                    <div class="login-text">
+                        <h2>Does Your Tutee Have An Account?</h2>
+                        <h6>Please Select an Option Below</h6>
+                    </div>
+                    <hr>
+                    <div class="signin-opts">
+                        <button id="child-acc-yes">Yes</button>
+                        <button id="child-acc-no">No</button>
+                    </div>
+                </div>
+                <div id="parent-child-link" style="display:none">
+                    <div class="login-text">
+                        <h2>Signed Up Tutee Information</h2>
+                        <h6>Please Input The Following Information</h6>
+                    </div>
+                    <hr>
+                    <form>
+                        <label class="form-label" for="tutee-email">Tutee Email</label><br>
+                        <input type="text" name="tutee-email" placeholder="tutee@gmail.com"><br><br>
+                        <input type="button" id="child-link-next" value="Next">
+                    </form>
+                </div>
                 <div id="tutee-info" style="display:none">
                     <div class="login-text">
                         <h2>Tutee Information</h2>
@@ -43,11 +66,13 @@
                         <div class="tutee-hide">
                             <label class="form-label" for="tutee-name">Tutee Name</label><br>
                             <input type="text" name="tutee-name" placeholder="Last, First"><br><br>
-                            <label class="form-label" for="tutee-name">Tutee Email</label><br>
-                            <input type="text" name="tutee-name" placeholder="tutee@gmail.com"><br><br>
+                            <label class="form-label" for="tutee-email">Tutee Email (optional)</label><br>
+                            <input type="text" name="tutee-email" placeholder="tutee@gmail.com"><br><br>
                         </div>
-                        <label class="form-label" for="parent-email">Parent Email(s)</label><br>
-                        <input type="text" name="parent-email" placeholder="parent@gmail.com"><br><br>
+                        <div class="parent-hide">
+                            <label class="form-label" for="parent-email">Parent Email(s)</label><br>
+                            <input type="text" name="parent-email" placeholder="parent@gmail.com"><br><br>
+                        </div>
                         <input type="button" id="tutee-info-next" value="Next">
                     </form>
                 </div>
