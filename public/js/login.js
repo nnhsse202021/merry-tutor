@@ -98,14 +98,17 @@ async function doLogin() { //add click listener to #google-login button which wi
 }
 
 /* First Time Login Flow */
+var shownSlideId = "base-login";
 function showSlide(id) {
+    console.log(shownSlideId)
     for (let slide of document.querySelector("#slider-box").children) {
         if (slide.id == id) {
-            slide.style.display = "block";
-        } else {
-            slide.style.display = "none";
+            slide.style.transform = "translateX(0)";
+        } else if (slide.id == shownSlideId) {
+            slide.style.transform = "translateX(-100%)";
         }
     }
+    shownSlideId = id;
 }
 
 async function submitNewUserData(newUserData) {

@@ -14,18 +14,26 @@
 #slider-box {
     border: 1px solid var(--mt-gold);
     border-radius: 10px;
-    padding: 10px;
     max-height: 575px;
     height: 100%;
     max-width: 448px;
     width: 100%;
+    position: relative;
+    overflow: hidden;
 }
 #slider-box hr {
     color: var(--mt-gray);
 }
 #slider-box > div {
     height: 100%;
+    width: 100%;
     text-align: center;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    transform: translateX(100%);
+    will-change: transform;
+    transition: transform 500ms linear
 }
 /* styling for all login cards */
 .login-text {
