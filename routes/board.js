@@ -15,7 +15,7 @@ mongoClient.connect(err => {
 })
 
 
-router.get("/aggregate", async (req,res) => {
+router.get("/allsummaries", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
         return;
@@ -26,7 +26,7 @@ router.get("/aggregate", async (req,res) => {
 
     //only auth'd users are past this point
     let sessionData = await summariesCollection.find({}).sort({date: -1}).limit(100).toArray();
-    res.render("boardaggregate", {user: req.user, summaries: sessionData});
+    res.render("allsummaries", {user: req.user, summaries: sessionData});
 });
 
 module.exports = router;
