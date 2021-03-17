@@ -29,6 +29,10 @@ mongoClient.connect(err => {
 //app.use takes a function that is added to the path of a request. When we call next() it goes to the next function in the path 
 app.use(async (req, res, next) => {
     if(req.session.userId) req.user = await usersCollection.findOne(ObjectID(req.session.userId)); //if there is a user id, set req.user to that user data object
+    if (!(req.path.startsWith("/auth") || req.path.startsWith("/login")) && req.user && req.user.roles.length == 0) { //make sure that the user completes the auth flow, people without roles are bad and arent allowed to do anything
+        res.redirect("/login?firstTimeFlow");
+        return;
+    }
     next();
 })
 
