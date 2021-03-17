@@ -22,9 +22,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/summary/new">Submit a Session</a>
                 </li>
+                <!--if object user.roles.contains(tutee)    -->
                 <li class="nav-item">
-                    <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">View Session Summary</a>
+                    <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">My Session Summaries</a>
                 </li>
+                
+                <% if (typeof user == "object" && user.roles.includes("board")) {%>
+                    <li class="nav-item">
+                        <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
+                    </li>
+                <% } %>
+                
+
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
