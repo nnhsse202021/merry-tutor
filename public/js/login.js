@@ -32,6 +32,7 @@ async function doLogin() { //add click listener to #google-login button which wi
         //check if user has roles, if they do, assume they don't need more data. If they don't, send them through the first time login flow
         if (user.roles.length != 0) {
             window.location = window.location.origin;
+            return;
         }
     }
 
