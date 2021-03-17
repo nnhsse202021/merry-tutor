@@ -1,5 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
+
+#login-container {
+    height: calc(100vh - 83px); /* navbar is 83px */
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Box that contains each login card */
+#slider-box {
+    border: 1px solid var(--mt-gold);
+    border-radius: 10px;
+    max-height: 575px;
+    height: 100%;
+    max-width: 448px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+#slider-box hr {
+    color: var(--mt-gray);
+}
+#slider-box > div {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    transform: translateX(100%);
+    will-change: transform;
+    transition: transform 500ms linear
+}
+/* styling for all login cards */
+.login-text {
+    padding: 5px 0 0 0;
+}
+.login-text h2 {
+    color: var(--mt-red);
+}
+.login-text h1 {
+    color: var(--mt-black);
+}
+.signin-opts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    padding: 25px 0;
+}
+.signin-opts > * {
+    margin-bottom: 15px;
+}
+.signin-opts > button {
+    background: var(--mt-orange-white);
+    color: var(--mt-red);
+    font-size: 24px;
+    border: 1px solid var(--mt-red);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+/* Google Login Button */
+
 #google-login {
     border: 1px solid transparent;
     background: #fff;
@@ -25,6 +91,9 @@
     padding: 10px;
     margin-right: 10px;
     height: 18px;
+}
+#google-login svg, #google-login svg::after, #google-login svg::before {
+    box-sizing: unset;
 }
 #google-login span {
     padding: 10px 10px 10px 0px;
