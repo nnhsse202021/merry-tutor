@@ -24,7 +24,7 @@ mongoClient.connect(err => {
 });
 
 router.get("/new", (req, res) => {
-    res.render("sessionsummary", {});
+    res.render("sessionsummary", {user: req.user});
 });
 
 router.post("/new", async (req, res) => {
