@@ -24,7 +24,7 @@ mongoClient.connect(err => {
 });
 
 router.get("/new", (req, res) => {
-    res.render("sessionsummary", {});
+    res.render("sessionsummary", {user: req.user});
 });
 
 router.post("/new", async (req, res) => {
@@ -50,7 +50,7 @@ router.post("/new", async (req, res) => {
         res.redirect("../");
     } else { // invalid form 
         // if invalid, alert user, keep form data
-        res.render("sessionsummary", {formData: formData});
+        res.render("sessionsummary", {user: req.user, formData: formData});
     }
 });
 

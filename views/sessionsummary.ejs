@@ -68,7 +68,7 @@
                 </div>
                 <% if (typeof formData != 'undefined') {%>
                     <script>
-                        
+                        document.querySelector("#subject").value = <%= formData['subject'] %> || document.querySelector("#subject").value
                     </script>
                 <% } %>
             </div>
