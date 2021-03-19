@@ -33,9 +33,9 @@ router.post("/new", async (req, res) => {
     // create js object to be inserted into document
     let formObj = {
         date: Date.parse(formData["session-date"]),
-        tutor_id: await find_id(formData["tutor-name"]), 
-        tutee_id: await find_id(formData["tutee-name"]), // somehow attach parent email
-        shadow_id: await find_id(formData["shadow-name"]),
+        tutor_id: String(await find_id(formData["tutor-name"])), 
+        tutee_id: String(await find_id(formData["tutee-name"])), // somehow attach parent email
+        shadow_id: formData["shadow-name"] ? String(await find_id(formData["shadow-name"])) : null,
         subject: formData["subject"],
         session_duration: formData["session-duration"],
 
