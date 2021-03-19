@@ -1,5 +1,4 @@
 <head>
-    <%- include("head.ejs") %>
 </head>
 <nav class= "navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -19,21 +18,21 @@
                 Links
             -->
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/summary/new">Submit a Session</a>
-                </li>
-                <!--if object user.roles.contains(tutee)    -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">My Session Summaries</a>
-                </li>
-                
+                <% if (typeof user == "object" && user.roles.includes("tutor")) {%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/summary/new">Submit a Session</a>
+                    </li>
+                <% } %>
+                <% if (typeof user == "object" && (user.roles.includes("tutee") || user.roles.includes("parent"))) {%>
+                    <li class="nav-item">
+                       <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">My Session Summaries</a>
+                    </li>
+                <% } %>
                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
                     <li class="nav-item">
                         <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
                     </li>
                 <% } %>
-                
-
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
@@ -41,9 +40,7 @@
                     <a class="nav-link" href="/login">Sign Up</a>
                 </li>
             </ul>
-            <!--
-                Tutee Search Form
-            -->
+            <% if (typeof user == "object" && user.roles.includes("tutor")) {%>
             <form class="form-inline my-2 my-lg-0">
                 <div class="input-group">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search for a Tutee">
@@ -52,6 +49,7 @@
                     </div>
                 </div>
             </form>
+            <% } %>
         </div>
     </div>
 </nav>
