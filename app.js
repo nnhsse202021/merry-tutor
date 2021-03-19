@@ -37,8 +37,7 @@ app.use(async (req, res, next) => {
 })
 
 //routes
-app.use("/tutee", require("./routes/tutee.js")); //anything send to /student... will be sent to student.js
-app.use("/tutor", require("./routes/tutor.js"));
+app.use("/tutee", require("./routes/tutee.js")); //anything send to /student... will be sent to student.jsnpm 
 app.use("/summary", require("./routes/summary.js"));
 app.use("/auth", require("./routes/auth.js"));
 app.use("/board", require("./routes/board.js"));
