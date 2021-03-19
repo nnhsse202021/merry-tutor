@@ -24,6 +24,14 @@ mongoClient.connect(err => {
 });
 
 router.get("/new", (req, res) => {
+    if (!req.user) { //must be logged in to see a tutee's data
+        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        return;
+    } else if (!(req.user.roles.includes("tutor"))) { //if you are not a tutor, you cannot access this data
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
+    }
+
     res.render("sessionsummary", {user: req.user});
 });
 
