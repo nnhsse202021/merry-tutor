@@ -23,10 +23,18 @@
                         <a class="nav-link" href="/summary/new">Submit a Session</a>
                     </li>
                 <% } %>
-                <% if (typeof user == "object" && (user.roles.includes("tutee") || user.roles.includes("parent"))) {%>
+                <% if (typeof user == "object" && (user.roles.includes("tutee"))) {%>
                     <li class="nav-item">
                        <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">My Session Summaries</a>
                     </li>
+                <% } %>
+                <% if (typeof user == "object" && user.roles.includes("parent")) {%>
+                    <% for (let child of user.children) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/tutee/<%= child._id %>">Placeholder for name</a>
+                        </li>
+                    <% } %>
+                            
                 <% } %>
                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
                     <li class="nav-item">
