@@ -29,12 +29,9 @@
                     </li>
                 <% } %>
                 <% if (typeof user == "object" && user.roles.includes("parent")) {%>
-                    <% for (let child of user.children) { %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/tutee/<%= child._id %>">Placeholder for name</a>
-                        </li>
-                    <% } %>
-                            
+                    <li class="nav-item">
+                        <a class="nav-link"href="/parent/mytuteesummaries" >My Tutee Summaries</a>
+                    </li>
                 <% } %>
                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
                     <li class="nav-item">
