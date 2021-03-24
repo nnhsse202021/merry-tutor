@@ -25,9 +25,7 @@ router.get("/mytuteesummaries", async (req,res) => {
 
     //only auth'd users are past this point
     let parent = req.user
-    console.log(parent)
     let sessionData = await summariesCollection.find({ tutee_id: { $in: parent.children } }).sort({date: -1}).limit(100).toArray();
-    console.log(sessionData)
     res.render("mytuteesummaries", {user: req.user, summaries: sessionData});
 });
 
