@@ -3,7 +3,7 @@ let express = require("express");
 router = express.Router();
 
 // import the MongoClient class and make a client with the url to our database
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient, ObjectID } = require('mongodb');
 const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.kfvlj.mongodb.net/merry-tutor?retryWrites=true&w=majority`;
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -25,25 +25,46 @@ mongoClient.connect(err => {
 
 router.get("/new", (req, res) => {
     if (!req.user) { //must be logged in to see a tutee's data
-        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        res.status(401).render("error", { code: 403, description: "You must be logged in to preform this action." });
         return;
     } else if (!(req.user.roles.includes("tutor"))) { //if you are not a tutor, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", { code: 403, description: "Unauthoried for logged in user." });
         return;
     }
 
-    res.render("sessionsummary", {user: req.user});
+    res.render("sessionsummary", { user: req.user });
 });
 
 router.post("/new", async (req, res) => {
-    let formData = req.body; //req.body is a js object of the form
-
+    let formData = req.body; //req.body is a js object of the formnpm`
     // create js object to be inserted into document
+    let tutorDoc = await find_user(formData["tutor-name"]);
+    let tuteeDoc = await find_user(formData["tutor-name"]);
+    let shadowDoc = await find_user(formData["tutor-name"]);
     let formObj = {
         date: Date.parse(formData["session-date"]),
-        tutor_id: String(await find_id(formData["tutor-name"])), 
-        tutee_id: String(await find_id(formData["tutee-name"])), // somehow attach parent email
-        shadow_id: formData["shadow-name"] ? String(await find_id(formData["shadow-name"])) : null,
+        tutor: {
+            id: String(tutorDoc["_id"]),
+            name: {
+                first: tutorDoc["name"]["first"],
+                last:  tutorDoc["name"]["last"]
+            }
+        },
+        tutee: {
+            id: String(await find_id(formData["tutee-name"])),
+            name: {
+                first: null,
+                last: null
+            }
+        },
+        shadow: {
+            id: formData["shadow-name"] ? String(await find_id(formData["shadow-name"])) : null,
+            name: {
+              first: null,
+              last: null
+            }
+          },
+
         subject: formData["subject"],
         session_duration: formData["session-duration"],
 
@@ -53,12 +74,13 @@ router.post("/new", async (req, res) => {
             next_time: formData["next-session-suggestion"]
         }
     }
-    if(formObj.tutor_id && formObj.tutee_id){    // validate for tutor_id and tutee_id
+    if (formObj.tutor.id && formObj.tutee.id) {    // validate for tutor_id and tutee_id
         summaryCollection.insertOne(formObj);
+        console.log("form submitted");
         res.redirect("../");
     } else { // invalid form 
         // if invalid, alert user, keep form data
-        res.render("sessionsummary", {user: req.user, formData: formData});
+        res.render("sessionsummary", { user: req.user, formData: formData });
     }
 });
 
@@ -83,6 +105,54 @@ async function find_id(name) {
     }
     user_id = userDoc["_id"];
     return user_id;
+}
+
+async function find_user(name) {
+    let [last, first] = name.replace(", ", ",").split(",");
+    // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
+    let userDoc = await usersCollection.findOne(
+        {
+            name: {
+                first: (first ?? "").toLowerCase(),
+                last: (last ?? "").toLowerCase()
+            }
+        });
+    if (!userDoc) {
+        return undefined;
+    }
+    return userDoc;
+}
+
+/*
+ * id to name function 
+ */
+async function find_firstname(id) {
+    console.log(id);
+    if (!id) {
+        return undefined;
+    }
+
+    let userDoc = await usersCollection.findOne(
+        {
+            _id: new ObjectID(id)
+        });
+    
+    user_name = userDoc["name"];
+    return user_name["first"];
+}
+
+async function find_lastname(id) {
+    if (!id) {
+        return undefined;
+    }
+
+    let userDoc = await usersCollection.findOne(
+        {
+            _id: new ObjectID(id)
+        });
+    
+    user_name = userDoc["name"];
+    return user_name["last"];
 }
 
 module.exports = router;
