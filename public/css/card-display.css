@@ -1,0 +1,11 @@
+#displayHeader {
+    background: var(--mt-orange-white);
+    border-radius: 10px;
+    border: 1px solid var(--mt-);
+    display: relative;
+}
+#filterSubject {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
