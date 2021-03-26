@@ -39,31 +39,31 @@ router.post("/new", async (req, res) => {
     let formData = req.body; //req.body is a js object of the formnpm`
     // create js object to be inserted into document
     let tutorDoc = await find_user(formData["tutor-name"]);
-    let tuteeDoc = await find_user(formData["tutor-name"]);
-    let shadowDoc = await find_user(formData["tutor-name"]);
+    let tuteeDoc = await find_user(formData["tutee-name"]);
+    let shadowDoc = await find_user(formData["shadow-name"]);
     let formObj = {
         date: Date.parse(formData["session-date"]),
         tutor: {
             id: String(tutorDoc["_id"]),
             name: {
                 first: tutorDoc["name"]["first"],
-                last:  tutorDoc["name"]["last"]
+                last: tutorDoc["name"]["last"]
             }
         },
         tutee: {
-            id: String(await find_id(formData["tutee-name"])),
+            id: String(tuteeDoc["_id"]),
             name: {
-                first: null,
-                last: null
+                first: tuteeDoc["name"]["first"],
+                last: tuteeDoc["name"]["last"]
             }
         },
         shadow: {
-            id: formData["shadow-name"] ? String(await find_id(formData["shadow-name"])) : null,
+            id: shadowDoc ? shadowDoc["_id"] : undefined,
             name: {
-              first: null,
-              last: null
+                first: shadowDoc ? shadowDoc["name"]["first"] : undefined,
+                last: shadowDoc ? shadowDoc["name"]["last"] : undefined
             }
-          },
+        },
 
         subject: formData["subject"],
         session_duration: formData["session-duration"],
@@ -136,7 +136,7 @@ async function find_firstname(id) {
         {
             _id: new ObjectID(id)
         });
-    
+
     user_name = userDoc["name"];
     return user_name["first"];
 }
@@ -150,7 +150,7 @@ async function find_lastname(id) {
         {
             _id: new ObjectID(id)
         });
-    
+
     user_name = userDoc["name"];
     return user_name["last"];
 }
