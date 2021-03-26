@@ -41,6 +41,7 @@ app.use("/tutee", require("./routes/tutee.js")); //anything send to /student... 
 app.use("/summary", require("./routes/summary.js"));
 app.use("/auth", require("./routes/auth.js"));
 app.use("/board", require("./routes/board.js"));
+app.use("/parent", require("./routes/parent.js"));
 
 app.get("/", (req,res) => {
     res.render("index.ejs", {user: req.user});

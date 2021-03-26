@@ -23,9 +23,14 @@
                         <a class="nav-link" href="/summary/new">Submit a Session</a>
                     </li>
                 <% } %>
-                <% if (typeof user == "object" && (user.roles.includes("tutee") || user.roles.includes("parent"))) {%>
+                <% if (typeof user == "object" && (user.roles.includes("tutee"))) {%>
                     <li class="nav-item">
                        <a class="nav-link" href="/tutee/<%= typeof user == "object" ? user._id : ""%>">My Session Summaries</a>
+                    </li>
+                <% } %>
+                <% if (typeof user == "object" && user.roles.includes("parent")) {%>
+                    <li class="nav-item">
+                        <a class="nav-link"href="/parent/mytuteesummaries" >My Tutee Summaries</a>
                     </li>
                 <% } %>
                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
