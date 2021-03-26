@@ -9,7 +9,7 @@
             <div id="sessionSummaryCards" class="col-10">
                 <% for (let summary of summaries) { %>
                     <div class="card mb-2">
-                        <h5 class="card-header"><%=`Session Summary For ${summary.tutee_id} By ${summary.tutor_id}`%></h5>
+                        <h5 class="card-header"><%=`Session Summary For ${summary.tutee.name.first} ${summary.tutee.name.last} By ${summary.tutor.name.first} ${summary.tutor.name.last}`%></h5>
                         <div class="card-body">
                             <h5 class="card-title">Session Date:</h5>
                             <p class="card-text"><%= (new Date(summary.date)).toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})%></p>
