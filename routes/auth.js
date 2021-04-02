@@ -18,18 +18,18 @@ mongoClient.connect(err => {
 });
 
 /*
-User Data Schema:
-{
-    _id: "string",
-    name: {
-        first: "First",
-        last: "Last"
-    },
-    email: "example@gmail.com", (optional)
-    google_sub: "string" (optional)
-    roles: ["tutee", "parent", "tutor", "board"],
-    children: ["id1", "id2"],
-}
+    User Data Schema:
+    {
+        _id: "string",
+        name: {
+            first: "First",
+            last: "Last"
+        },
+        email: "example@gmail.com", (optional)
+        google_sub: "string" (optional)
+        roles: ["tutee", "parent", "tutor", "board"],
+        children: ["id1", "id2"],
+    }
 */
 router = express.Router();
 
@@ -124,5 +124,11 @@ async function findIdByEmail(email) {
     user_id = userDoc["_id"];
     return user_id;
 }
+
+// Logout
+router.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.render("index");
+  });
 
 module.exports = router;

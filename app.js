@@ -51,9 +51,4 @@ app.get("/login", (req,res) => {
     res.render("login");
 })
 
-app.get("/logout", (req,res) => {
-    res.render("index.ejs");
-})
-
-
 app.listen(8080, () => {console.log("Listening on port 8080")});
