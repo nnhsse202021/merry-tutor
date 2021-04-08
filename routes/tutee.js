@@ -28,9 +28,7 @@ router.get("/:_id", async (req,res) => {
     let tutee = await usersCollection.findOne({_id: new ObjectID(req.params._id)});
     tutee.name.first = tutee.name.first.split(" ").map(x => x[0].toUpperCase() + x.slice(1)).join(" ");
     tutee.name.last = tutee.name.last.split(" ").map(x => x[0].toUpperCase() + x.slice(1)).join(" ");
-    console.log(req.params._id)
     let sessionData = await summariesCollection.find({"tutee.id": req.params._id}).sort({date: -1}).limit(100).toArray();
-    console.log(sessionData);
     res.render("tutee", {user: req.user, summaries: sessionData, tutee: tutee});
 });
 

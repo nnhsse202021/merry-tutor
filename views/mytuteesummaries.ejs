@@ -6,23 +6,7 @@
         <%- include("navbar.ejs") %>
         <div id="sessionSummaryContainer" class="row mx-auto w-80 justify-content-center">
             <h1 class="text-center">Session Summaries for My Tutee(s)</h1>
-            <div id="sessionSummaryCards" class="col-10">
-                <% for (let summary of summaries) { %>
-                    <div class="card mb-2">
-                        <h5 class="card-header"><%=`Session Summary For ${summary.tutee.name.first} ${summary.tutee.name.last} By ${summary.tutor.name.first} ${summary.tutor.name.last}`%></h5>
-                        <div class="card-body">
-                            <h5 class="card-title">Session Date:</h5>
-                            <p class="card-text"><%= (new Date(summary.date)).toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})%></p>
-                            <h5 class="card-title">What They Learned:</h5>
-                            <p class="card-text"><%=summary.fields.what_they_learned%></p>
-                            <h5 class="card-title">What They Should Work On At Home:</h5>
-                            <p class="card-text"><%=summary.fields.homework%></p>
-                            <h5 class="card-title">What They Should Work On During the Next Session:</h5>
-                            <p class="card-text"><%=summary.fields.next_time%></p>
-                        </div>
-                    </div>
-                <% } %>
-            </div>
+            <%- include("summarycard.ejs") %>
         </div>
     </body>
 </html>
