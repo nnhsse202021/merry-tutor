@@ -123,37 +123,5 @@ async function find_user(name) {
     return userDoc;
 }
 
-/*
- * id to name function 
- */
-async function find_firstname(id) {
-    console.log(id);
-    if (!id) {
-        return undefined;
-    }
-
-    let userDoc = await usersCollection.findOne(
-        {
-            _id: new ObjectID(id)
-        });
-
-    user_name = userDoc["name"];
-    return user_name["first"];
-}
-
-async function find_lastname(id) {
-    if (!id) {
-        return undefined;
-    }
-
-    let userDoc = await usersCollection.findOne(
-        {
-            _id: new ObjectID(id)
-        });
-
-    user_name = userDoc["name"];
-    return user_name["last"];
-}
-
 module.exports = router;
 
