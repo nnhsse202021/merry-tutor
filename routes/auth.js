@@ -128,7 +128,7 @@ async function findIdByEmail(email) {
 // Logout
 router.get('/logout', function (req, res) {
     req.session.destroy();
-    res.render("index");
+    res.redirect("/");
   });
 
 module.exports = router;
