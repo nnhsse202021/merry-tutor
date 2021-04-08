@@ -14,7 +14,6 @@ mongoClient.connect(err => {
     summariesCollection = mongoClient.db("merry-tutor").collection("Summaries");
 })
 
-
 router.get("/allsummaries", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
@@ -27,6 +26,23 @@ router.get("/allsummaries", async (req,res) => {
     //only auth'd users are past this point
     let sessionData = await summariesCollection.find({}).sort({date: -1}).limit(100).toArray();
     res.render("allsummaries", {user: req.user, summaries: sessionData});
+});
+
+router.get("/newtutor", async (req,res) => {
+    if (!req.user) { //must be logged in to see a tutee's data
+        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        return;
+    } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
+    }
+
+    res.render("newtutor", {user: req.user});
+});
+
+router.post("/new", async (req, res) => {
+    let formData = req.body;
+    res.render("newtutor", { user: req.user, formData: formData });
 });
 
 module.exports = router;
