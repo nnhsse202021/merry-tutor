@@ -38,12 +38,15 @@
                         <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
                     </li>
                 <% } %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Sign Up</a>
-                </li>
+                <% if (typeof user != "object") {%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login/Sign Up</a>
+                    </li>
+                <% } else {%>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/logout" >Log Out</a>
+                    </li>
+                <% } %>
             </ul>
             <% if (typeof user == "object" && user.roles.includes("tutor")) {%>
             <form class="form-inline my-2 my-lg-0">

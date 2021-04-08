@@ -11,25 +11,7 @@
                     <input class="mx-3 form-control w-25" id="filterSubject" type="text" placeholder="Filter Subject" aria-label="Filter Subject">
                 </nav>
             </div>
-            <div id="sessionSummaryCards" class="col-10">
-                <% for (let summary of summaries) { %>
-                    <div class="card mb-2" subjects=<%=summary.subject%>>
-                        <div class="card-header">
-                            <h5><%=`Session Summary For ${tutee.name.first} ${tutee.name.last} On ${new Date(summary.date).toLocaleDateString()}`%></h5>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Subject(s):</h5>
-                            <p class="card-text"><%=Array(summary.subject).flat().map(x=> x[0].toUpperCase() + x.slice(1)).join(", ")%></p>
-                            <h5 class="card-title">What They Learned:</h5>
-                            <p class="card-text"><%=summary.fields.what_they_learned%></p>
-                            <h5 class="card-title">What They Should Work On At Home:</h5>
-                            <p class="card-text"><%=summary.fields.homework%></p>
-                            <h5 class="card-title">What They Should Work On During the Next Session:</h5>
-                            <p class="card-text"><%=summary.fields.next_time%></p>
-                        </div>
-                    </div>
-                <% } %>
-            </div>
+            <%- include("summarycard.ejs") %>
         </div>
         <script src="/js/card-filter.js"></script>
     </body>
