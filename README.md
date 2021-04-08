@@ -8,7 +8,7 @@ Admins, Tutors, Tutees, and Parents will have varying levels of access when usin
 The app itself is not specific to one operating system, and can be used cross-platform. Node.js v14.15.4+ is required, as well as
 an editing software such as Virtual Studio Code.
 **Installation Instructions**
-Virtual Studio Code can be installed here: https://code.visualstudio.com/download
+Visual Studio Code can be installed here: https://code.visualstudio.com/download
 Node.js can be installed here: https://nodejs.org/en/download/
 **Configuration and Running**
 1. Clone the project repository and open in VSCode
