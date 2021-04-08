@@ -1,11 +1,14 @@
-#displayHeader {
-    background: var(--mt-orange-white);
-    border-radius: 10px;
-    border: 1px solid var(--mt-);
-    display: relative;
+#cardNavLabel {
+    text-align: center;
 }
-#filterSubject {
-    position: absolute;
-    top: 0;
-    right: 0;
+#cardNavButtons {
+    flex-grow: 1;
+}
+@media (min-width: 993px) {
+    #cardNavLabel {
+        text-align: left !important
+    }
+    #cardNavButtons {
+        flex-grow: 0;
+    }
 }
