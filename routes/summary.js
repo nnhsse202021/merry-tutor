@@ -84,29 +84,6 @@ router.post("/new", async (req, res) => {
     }
 });
 
-/*  
-    name to id function (author: Dylan Schmit)
-    Makes an async function so you can use await. 
-    Functions that return a promise can have await put before them and code execution will wait for the promise to resolve and 
-    return its value you can make an arrow function async by turning `() => {...}` into `async () => {...}`
-    */
-async function find_id(name) {
-    let [last, first] = name.replace(", ", ",").split(",");
-    // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
-    let userDoc = await usersCollection.findOne(
-        {
-            name: {
-                first: (first ?? "").toLowerCase(),
-                last: (last ?? "").toLowerCase()
-            }
-        });
-    if (!userDoc) {
-        return undefined;
-    }
-    user_id = userDoc["_id"];
-    return user_id;
-}
-
 async function find_user(name) {
     let [last, first] = name.replace(", ", ",").split(",");
     // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
