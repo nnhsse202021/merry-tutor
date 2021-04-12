@@ -11,7 +11,13 @@
                     <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%=`Session Summaries for My Tutee(s)`%></h4>
                     <div class="d-flex align-self-end justify-content-center mx-2" id="cardNavButtons">
                         <input class="mx-1 form-control" style="max-width:143px" id="filterTutee" type="text" placeholder="Filter Tutee" aria-label="Filter Tutee">
-                        <input class="mx-1 form-control" style="max-width:143px" id="filterSubject" type="text" placeholder="Filter Subject" aria-label="Filter Subject">
+                        <input class="mx-1 form-control" style="max-width:143px" id="filterSubject" list="subjectOptions" placeholder="Filter Subject" aria-label="Filter Subject">
+                        <datalist id="subjectOptions">
+                            <option value="Math"></option>
+                            <option value="Science"></option>
+                            <option value="Social Studies"></option>
+                            <option value="English"></option>
+                        </datalist>
                     </div>
                 </nav>
             </div>
