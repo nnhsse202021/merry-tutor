@@ -43,7 +43,7 @@ router.get("/newtutor", async (req,res) => {
 router.post("/newtutor", async (req, res) => {
     let formData = req.body;
     console.log(formData);
-
+    getOrMakeUser(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase()) //not completed
     res.render("newtutor", { user: req.user, formData: formData });
 });
 
