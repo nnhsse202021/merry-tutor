@@ -1,0 +1,14 @@
+#cardNavLabel {
+    text-align: center;
+}
+#cardNavButtons {
+    flex-grow: 1;
+}
+@media (min-width: 993px) {
+    #cardNavLabel {
+        text-align: left !important
+    }
+    #cardNavButtons {
+        flex-grow: 0;
+    }
+}
