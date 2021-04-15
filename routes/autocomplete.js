@@ -15,8 +15,26 @@ mongoClient.connect(err => {
 
 router = express.Router();
 router.get("/",async (req,res) => {
-    console.log( await usersCollection.aggregate( {$project: {"fullname": {$concat: ["$name.first"," ","$name.last"] } } } ).toArray() );
-    res.send(req.query.input);
+    let results = (await usersCollection.aggregate([
+        {
+          '$addFields': {
+            'fullname': {
+              '$concat': [
+                '$name.first', ' ', '$name.last'
+              ]
+            }
+          }
+        }, {
+          '$match': {
+            'fullname': new RegExp(`${req.query.input}.*`)
+          }
+        }, {
+          '$project': {
+            'fullname': 1
+          }
+        }
+      ]).toArray()).map(x => [x.fullname, String(x._id)])
+    res.json(results);
 });
 
 module.exports = router;
