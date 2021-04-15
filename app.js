@@ -37,6 +37,7 @@ app.use("/tutee", require("./routes/tutee.js")); //anything send to /student... 
 app.use("/tutor", require("./routes/tutor.js"));
 app.use("/summary", require("./routes/summary.js"));
 app.use("/auth", require("./routes/auth.js"));
+app.use("/autocomplete", require("./routes/autocomplete.js"));
 
 app.get("/", (req,res) => {
     res.render("index.ejs", {user: req.user});
