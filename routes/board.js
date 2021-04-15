@@ -43,8 +43,9 @@ router.get("/newtutor", async (req,res) => {
 router.post("/newtutor", async (req, res) => {
     let formData = req.body;
     console.log(formData);
-    getOrMakeUser(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase()) //not completed
+    await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase());
     res.render("newtutor", { user: req.user, formData: formData });
+    res.status(201);
 });
 
 /*
@@ -54,7 +55,7 @@ Matching priority:
 2. email
 3. name (first and last)
 */
-async function getOrMakeUser(google_sub, email, given_name, family_name) {
+async function getOrMakeTutor(google_sub, email, given_name, family_name) {
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
@@ -67,7 +68,7 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
             },
             email: email,
             google_sub: google_sub,
-            roles: [],
+            roles: ["tutor"],
             children: []
         };
         await usersCollection.insertOne(user); // insert the user into the collection
@@ -80,12 +81,13 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
             email: email,
             google_sub: google_sub
         });
+        user.roles.push("tutor");
         await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
     return user; //return the user (either newly made or updated)
 }
 
-// for reference
+// for reference; delete later
 /*
 router.post("/v1/google", async (req, res) => { //login.js sends the id_token to this url, we'll verify it and extract its data
     let { token }  = req.body; //get the token from the request body
