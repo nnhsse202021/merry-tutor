@@ -28,7 +28,7 @@ router.get("/allsummaries", async (req,res) => {
     res.render("allsummaries", {user: req.user, summaries: sessionData});
 });
 
-router.get("/newtutor", async (req,res) => {
+router.get("/registertutor", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
         return;
@@ -37,14 +37,13 @@ router.get("/newtutor", async (req,res) => {
         return;
     }
 
-    res.render("newtutor", {user: req.user});
+    res.render("registertutor", {user: req.user});
 });
 
-router.post("/newtutor", async (req, res) => {
+router.post("/registertutor", async (req, res) => {
     let formData = req.body;
-    console.log(formData);
     await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase());
-    res.render("newtutor", { user: req.user, formData: formData });
+    res.render("registertutor", { user: req.user, formData: formData });
     res.status(201);
 });
 
@@ -86,21 +85,5 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name) {
     }
     return user; //return the user (either newly made or updated)
 }
-
-// for reference; delete later
-/*
-router.post("/v1/google", async (req, res) => { //login.js sends the id_token to this url, we'll verify it and extract its data
-    let { token }  = req.body; //get the token from the request body
-    let ticket = await oAuth2Client.verifyIdToken({ //verify and decode the id_token
-        idToken: token,
-        audience: CLIENT_ID
-    });
-    let {sub, email, given_name, family_name} = ticket.getPayload(); //get the user data we care about from the id_token
-    let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase()); //call this function to get a reference to the user that's stored in the database
-    req.session.userId = user._id; //sets "userId" on the session to the id of the user in the database
-    res.status(201);
-    res.json(user);
-})
-*/
 
 module.exports = router;
