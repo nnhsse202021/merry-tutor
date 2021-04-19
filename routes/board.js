@@ -47,13 +47,36 @@ router.post("/addtutor", async (req, res) => {
     res.status(201);
 });
 
-/*
-Return + update a user if match in database otherwise make a new user, add it to the database and return it
+router.get("/removetutor", async (req,res) => {
+    if (!req.user) { //must be logged in to see a tutee's data
+        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        return;
+    } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
+    }
+
+    res.render("removetutor", {user: req.user});
+});
+
+router.post("/removetutor", async (req, res) => {
+    let formData = req.body;
+    let result = await usersCollection.findOneAndUpdate({email: formData["tutor-email"]}, {$pull: {roles: { $in: [ "tutor", "board" ] }}});
+    if (result.value != null){
+        console.log("tutor and board role successfully removed from tutor with email " + formData["tutor-email"] + ".");
+    } else{
+        console.log("Tutor with email " + formData["tutor-email"] + "not found.");
+    }
+    res.render("removetutor", { user: req.user, formData: formData});
+});
+
+/**
+ * Return + update a user if match in database otherwise make a new user, add it to the database and return it
 Matching priority:
 1. google_sub
 2. email
 3. name (first and last)
-*/
+ */
 async function getOrMakeTutor(google_sub, email, given_name, family_name) {
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email

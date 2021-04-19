@@ -20,6 +20,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/summary/new">Submit a Session</a>
                     </li>
+                    <% if (typeof user == "object" && user.roles.includes("board")) {%>
+                        <li class="nav-item">
+                            <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/board/addtutor" class="nav-link">Add Tutor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/board/removetutor" class="nav-link">Remove Tutor</a>
+                        </li>
+                    <% } %>
                 <% } %>
                 <% if (typeof user == "object" && (user.roles.includes("tutee"))) {%>
                     <li class="nav-item">
@@ -29,17 +40,6 @@
                 <% if (typeof user == "object" && user.roles.includes("parent")) {%>
                     <li class="nav-item">
                         <a class="nav-link"href="/parent/mytuteesummaries" >My Tutee Summaries</a>
-                    </li>
-                <% } %>
-                <% if (typeof user == "object" && user.roles.includes("board")) {%>
-                    <li class="nav-item">
-                        <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/board/addtutor" class="nav-link">Add Tutor</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/board/removetutor" class="nav-link">Remove Tutor</a>
                     </li>
                 <% } %>
                 <% if (typeof user != "object") {%>
