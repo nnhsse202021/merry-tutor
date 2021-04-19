@@ -28,7 +28,7 @@ router.get("/allsummaries", async (req,res) => {
     res.render("allsummaries", {user: req.user, summaries: sessionData});
 });
 
-router.get("/registertutor", async (req,res) => {
+router.get("/addtutor", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
         return;
@@ -37,13 +37,13 @@ router.get("/registertutor", async (req,res) => {
         return;
     }
 
-    res.render("registertutor", {user: req.user});
+    res.render("addtutor", {user: req.user});
 });
 
-router.post("/registertutor", async (req, res) => {
+router.post("/addtutor", async (req, res) => {
     let formData = req.body;
     await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase());
-    res.render("registertutor", { user: req.user, formData: formData });
+    res.render("addtutor", { user: req.user, formData: formData });
     res.status(201);
 });
 
