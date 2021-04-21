@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <%- include("head.ejs") %>
+    </head>
+    <body>
+        <%- include("navbar.ejs") %>
+        <h1>Remove a Tutor</h1>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="tutorEmail" class="form-label">Tutor's email address</label>
+                <input type="email" class="form-control" name="tutor-email" id="tutor-email" placeholder="name@example.com">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </body>
+</html>

@@ -6,8 +6,6 @@
         <a class="navbar-brand" href="/#">
             <img src="/img/merrytutorlogo.png" alt="" width="81" height="57">
         </a>
-
-        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,6 +18,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/summary/new">Submit a Session</a>
                     </li>
+                    <% if (typeof user == "object" && user.roles.includes("board")) {%>
+                        <li class="nav-item">
+                            <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/board/addtutor" class="nav-link">Add Tutor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/board/removetutor" class="nav-link">Remove Tutor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/board/addboard" class="nav-link">Add Board</a>
+                        </li>
+                    <% } %>
                 <% } %>
                 <% if (typeof user == "object" && (user.roles.includes("tutee"))) {%>
                     <li class="nav-item">
@@ -31,14 +43,9 @@
                         <a class="nav-link"href="/parent/mytuteesummaries" >My Tutee Summaries</a>
                     </li>
                 <% } %>
-                <% if (typeof user == "object" && user.roles.includes("board")) {%>
-                    <li class="nav-item">
-                        <a class="nav-link"href="/board/allsummaries" >All Summaries</a>
-                    </li>
-                <% } %>
                 <% if (typeof user != "object") {%>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Login/Sign Up</a>
+                        <a class="nav-link" href="/login">Log in or Sign Up</a>
                     </li>
                 <% } else {%>
                     <li class="nav-item">
