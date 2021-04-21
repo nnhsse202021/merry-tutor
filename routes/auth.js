@@ -32,7 +32,6 @@ mongoClient.connect(err => {
     }
 */
 router = express.Router();
-
 router.post("/v1/google", async (req, res) => { //login.js sends the id_token to this url, we'll verify it and extract its data
     let { token }  = req.body; //get the token from the request body
     let ticket = await oAuth2Client.verifyIdToken({ //verify and decode the id_token
