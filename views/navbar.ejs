@@ -38,7 +38,7 @@
                     </li>
                 <% } %>
                 <% if (typeof user=="object" && user.roles.includes("tutor")) {%>
-                    <div id="tutee-searchbar">
+                    <div class = "nav-item dropdown" id="tutee-searchbar">
                         <style>
                             .autocomplete-items div {
                             padding: 2px;
@@ -60,9 +60,9 @@
                             }
                         </style>
                         <!--Make sure the form has the autocomplete function switched off:-->
-                        <form autocomplete="off" action="/action_page.php">
-                            <div class="autocomplete" style="width:00px; padding-top: 20px; padding-left: 10px;">
-                                <input id="myInput" type="text" name="myCountry" placeholder="Search For a Tutee">
+                        <form class="d-flex" autocomplete="off" action="/action_page.php">
+                            <div class="autocomplete">
+                                <input class="form-control me-2" type="search" id="myInput" type="text" name="myCountry" placeholder="Search For a Tutee">
                             </div>
                         </form>
                         <script> 
@@ -172,14 +172,6 @@
                             /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
                             autocomplete(document.getElementById("myInput"), names,);
                         </script>
-                        <form class="form-inline my-2 my-lg-0" >
-                            <div class="input-group"><!----
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search for a Tutee">
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" type="submit">Search</button>
-                                </div>
-                            </div>-->
-                        </form>
                     </div>
                 <% } %> 
                 <% if (typeof user != "object") {%>
