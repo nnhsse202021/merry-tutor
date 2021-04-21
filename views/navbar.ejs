@@ -1,8 +1,5 @@
 <nav class= "navbar navbar-expand-lg navbar-dark bg-dark"> 
     <div class="container-fluid">
-        <!--
-            Logo
-        -->
         <a class="navbar-brand" href="/#">
             <img src="/img/merrytutorlogo.png" alt="" width="81" height="57">
         </a>
@@ -10,9 +7,6 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!--
-                Links
-            -->
             <ul class="navbar-nav">
                 <% if (typeof user == "object" && user.roles.includes("tutor")) {%>
                     <li class="nav-item">
@@ -43,6 +37,151 @@
                         <a class="nav-link"href="/parent/mytuteesummaries" >My Tutee Summaries</a>
                     </li>
                 <% } %>
+                <% if (typeof user=="object" && user.roles.includes("tutor")) {%>
+                    <div id="tutee-searchbar">
+                        <style>
+                            .autocomplete-items div {
+                            padding: 2px;
+                            cursor: pointer;
+                            background-color: #ffffff; 
+                            border-bottom: 2px solid #000000; 
+                            width: 180px;
+                            }
+    
+                            /*when hovering an item:*/
+                            .autocomplete-items div:hover {
+                            background-color: #b46673; 
+                            }
+    
+                            /*when navigating through the items using the arrow keys:*/
+                            .autocomplete-active {
+                            background-color: rgb(255, 255, 255); 
+                            color: #7e2e3c; 
+                            }
+                        </style>
+                        <!--Make sure the form has the autocomplete function switched off:-->
+                        <form autocomplete="off" action="/action_page.php">
+                            <div class="autocomplete" style="width:00px; padding-top: 20px; padding-left: 10px;">
+                                <input id="myInput" type="text" name="myCountry" placeholder="Search For a Tutee">
+                            </div>
+                        </form>
+                        <script> 
+                            function autocomplete(inp, arr) {
+                            /*the autocomplete function takes two arguments,
+                            the text field element and an array of possible autocompleted values:*/
+                            var currentFocus;
+                            /*execute a function when someone writes in the text field:*/
+                            inp.addEventListener("input", async function(e) {
+                                var a, b, i, val = this.value; /*val is user input*/
+                                /*close any already open lists of autocompleted values*/
+                                closeAllLists();
+                                if (!val) { return false;}
+                                currentFocus = -1;
+                                /*create a DIV element that will contain the items (values):*/
+                                a = document.createElement("DIV");
+                                a.setAttribute("id", this.id + "autocomplete-list");
+                                a.setAttribute("class", "autocomplete-items");
+                                /*append the DIV element as a child of the autocomplete container:*/
+                                this.parentNode.appendChild(a);
+                                /*for each item in the array...*/
+                                let arr = await (await fetch("/autocomplete?input=" + val)).json();
+                                console.log(arr)
+                                for (i = 0; i < arr.length; i++) {
+                                    /*check if the item starts with the same letters as the text field value:*/
+                                    let option = arr[i]
+                                    if (option[0].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                                    /*create a DIV element for each matching element:*/
+                                    b = document.createElement("DIV");
+                                    /*make the matching letters bold:*/
+                                    b.innerHTML = "<strong>" + option[0].substr(0, val.length) + "</strong>";
+                                    b.innerHTML += option[0].substr(val.length);
+                                    /*insert a input field that will hold the current array item's value:*/
+                                    b.innerHTML += "<input type='hidden' value='" + option[0] + "'>";
+                                    /*execute a function when someone clicks on the item value (DIV element):*/
+                                    b.addEventListener("click", function(e) {
+                                        /*insert the value for the autocomplete text field:*/
+                                        window.location.href = `/tutee/${option[1]}`
+                                        /*close the list of autocompleted values,
+                                        (or any other open lists of autocompleted values:*/
+                                        closeAllLists();
+                                    });
+                                    a.appendChild(b);
+                                    }
+                                }
+                            });
+                            /*execute a function  presses a key on the keyboard:*/
+                            inp.addEventListener("keydown", function(e) {
+                                var x = document.getElementById(this.id + "autocomplete-list");
+                                if (x) x = x.getElementsByTagName("div");
+                                if (e.keyCode == 40) {
+                                    /*If the arrow DOWN key is pressed,
+                                    increase the currentFocus variable:*/
+                                    currentFocus++;
+                                    /*and and make the current item more visible:*/
+                                    addActive(x);
+                                } else if (e.keyCode == 38) { //up
+                                    /*If the arrow UP key is pressed,
+                                    decrease the currentFocus variable:*/
+                                    currentFocus--;
+                                    /*and and make the current item more visible:*/
+                                    addActive(x);
+                                } else if (e.keyCode == 13) {
+                                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                                    e.preventDefault();
+                                    if (currentFocus > -1) {
+                                    /*and simulate a click on the "active" item:*/
+                                    if (x) x[currentFocus].click();
+                                    }
+                                }
+                            });
+                            function addActive(x) {
+                                /*a function to classify an item as "active":*/
+                                if (!x) return false;
+                                /*start by removing the "active" class on all items:*/
+                                removeActive(x);
+                                if (currentFocus >= x.length) currentFocus = 0;
+                                if (currentFocus < 0) currentFocus = (x.length - 1);
+                                /*add class "autocomplete-active":*/
+                                x[currentFocus].classList.add("autocomplete-active");
+                            }
+                            function removeActive(x) {
+                                /*a function to remove the "active" class from all autocomplete items:*/
+                                for (var i = 0; i < x.length; i++) {
+                                x[i].classList.remove("autocomplete-active");
+                                }
+                            }
+                            function closeAllLists(elmnt) {
+                                /*close all autocomplete lists in the document,
+                                except the one passed as an argument:*/
+                                var x = document.getElementsByClassName("autocomplete-items");
+                                for (var i = 0; i < x.length; i++) {
+                                if (elmnt != x[i] && elmnt != inp) {
+                                    x[i].parentNode.removeChild(x[i]);
+                                }
+                                }
+                            }
+                            /*execute a function when someone clicks in the document:*/
+                            document.addEventListener("click", function (e) {
+                                closeAllLists(e.target);
+                            });
+                            }
+                            
+                            /*An array containing all the names:*/
+                            var names = ["Joseph", "Joe", "David", "Dumbo", "Tyler", "Avaneesh", "Dylan", "Ava", "Kevin", "Potter"];
+                            
+                            /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+                            autocomplete(document.getElementById("myInput"), names,);
+                        </script>
+                        <form class="form-inline my-2 my-lg-0" >
+                            <div class="input-group"><!----
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search for a Tutee">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit">Search</button>
+                                </div>
+                            </div>-->
+                        </form>
+                    </div>
+                <% } %> 
                 <% if (typeof user != "object") {%>
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Log in or Sign Up</a>
@@ -53,153 +192,6 @@
                     </li>
                 <% } %>
             </ul>
-            <h2></h2>
-
-            <p></p>
-                <style>
-                .autocomplete-items div {
-                padding: 2px;
-                cursor: pointer;
-                background-color: #ffffff; 
-                border-bottom: 2px solid #000000; 
-                width: 180px;
-                }
-
-                /*when hovering an item:*/
-                .autocomplete-items div:hover {
-                background-color: #b46673; 
-                }
-
-                /*when navigating through the items using the arrow keys:*/
-                .autocomplete-active {
-                background-color: rgb(255, 255, 255); 
-                color: #7e2e3c; 
-                }
-                </style>
-
-<!--Make sure the form has the autocomplete function switched off:-->
-                <form autocomplete="off" action="/action_page.php">
-                <div class="autocomplete" style="width:00px; padding-top: 20px; padding-left: 10px;">
-                <input id="myInput" type="text" name="myCountry" placeholder="Search For a Tutee">
-                </div>
-                <!--<input type="submit">-->
-                </form>
-
-            <script> 
-                function autocomplete(inp, arr) {
-                  /*the autocomplete function takes two arguments,
-                  the text field element and an array of possible autocompleted values:*/
-                  var currentFocus;
-                  /*execute a function when someone writes in the text field:*/
-                  inp.addEventListener("input", async function(e) {
-                      var a, b, i, val = this.value; /*val is user input*/
-                      /*close any already open lists of autocompleted values*/
-                      closeAllLists();
-                      if (!val) { return false;}
-                      currentFocus = -1;
-                      /*create a DIV element that will contain the items (values):*/
-                      a = document.createElement("DIV");
-                      a.setAttribute("id", this.id + "autocomplete-list");
-                      a.setAttribute("class", "autocomplete-items");
-                      /*append the DIV element as a child of the autocomplete container:*/
-                      this.parentNode.appendChild(a);
-                      /*for each item in the array...*/
-                      let arr = await (await fetch("/autocomplete?input=" + val)).json();
-                      console.log(arr)
-                      for (i = 0; i < arr.length; i++) {
-                        /*check if the item starts with the same letters as the text field value:*/
-                        let option = arr[i]
-                        if (option[0].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                          /*create a DIV element for each matching element:*/
-                          b = document.createElement("DIV");
-                          /*make the matching letters bold:*/
-                          b.innerHTML = "<strong>" + option[0].substr(0, val.length) + "</strong>";
-                          b.innerHTML += option[0].substr(val.length);
-                          /*insert a input field that will hold the current array item's value:*/
-                          b.innerHTML += "<input type='hidden' value='" + option[0] + "'>";
-                          /*execute a function when someone clicks on the item value (DIV element):*/
-                          b.addEventListener("click", function(e) {
-                              /*insert the value for the autocomplete text field:*/
-                              window.location.href = `/tutee/${option[1]}`
-                              /*close the list of autocompleted values,
-                              (or any other open lists of autocompleted values:*/
-                              closeAllLists();
-                          });
-                          a.appendChild(b);
-                        }
-                      }
-                  });
-                  /*execute a function  presses a key on the keyboard:*/
-                  inp.addEventListener("keydown", function(e) {
-                      var x = document.getElementById(this.id + "autocomplete-list");
-                      if (x) x = x.getElementsByTagName("div");
-                      if (e.keyCode == 40) {
-                        /*If the arrow DOWN key is pressed,
-                        increase the currentFocus variable:*/
-                        currentFocus++;
-                        /*and and make the current item more visible:*/
-                        addActive(x);
-                      } else if (e.keyCode == 38) { //up
-                        /*If the arrow UP key is pressed,
-                        decrease the currentFocus variable:*/
-                        currentFocus--;
-                        /*and and make the current item more visible:*/
-                        addActive(x);
-                      } else if (e.keyCode == 13) {
-                        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-                        e.preventDefault();
-                        if (currentFocus > -1) {
-                          /*and simulate a click on the "active" item:*/
-                          if (x) x[currentFocus].click();
-                        }
-                      }
-                  });
-                  function addActive(x) {
-                    /*a function to classify an item as "active":*/
-                    if (!x) return false;
-                    /*start by removing the "active" class on all items:*/
-                    removeActive(x);
-                    if (currentFocus >= x.length) currentFocus = 0;
-                    if (currentFocus < 0) currentFocus = (x.length - 1);
-                    /*add class "autocomplete-active":*/
-                    x[currentFocus].classList.add("autocomplete-active");
-                  }
-                  function removeActive(x) {
-                    /*a function to remove the "active" class from all autocomplete items:*/
-                    for (var i = 0; i < x.length; i++) {
-                      x[i].classList.remove("autocomplete-active");
-                    }
-                  }
-                  function closeAllLists(elmnt) {
-                    /*close all autocomplete lists in the document,
-                    except the one passed as an argument:*/
-                    var x = document.getElementsByClassName("autocomplete-items");
-                    for (var i = 0; i < x.length; i++) {
-                      if (elmnt != x[i] && elmnt != inp) {
-                        x[i].parentNode.removeChild(x[i]);
-                      }
-                    }
-                  }
-                  /*execute a function when someone clicks in the document:*/
-                  document.addEventListener("click", function (e) {
-                      closeAllLists(e.target);
-                  });
-                }
-                
-                /*An array containing all the names:*/
-                var names = ["Joseph", "Joe", "David", "Dumbo", "Tyler", "Avaneesh", "Dylan", "Ava", "Kevin", "Potter"];
-                
-                /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-                autocomplete(document.getElementById("myInput"), names,);
-                </script>
-            <form class="form-inline my-2 my-lg-0" >
-                <div class="input-group"><!----
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search for a Tutee">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="submit">Search</button>
-                    </div>
-                </div>-->
-            </form>
         </div>
     </div>
 </nav>
