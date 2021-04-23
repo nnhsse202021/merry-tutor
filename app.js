@@ -59,7 +59,6 @@ app.use((err, req, res, next) => {
 })
 
 app.use((req,res,next) => {
-    console.log(req.url);
     res.status(404).render("error", {code: 404, description: "The Requested Page Was Not Found"})
 })
 
