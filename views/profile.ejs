@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <%- include("head.ejs") %>
+    </head>
+    <body>
+        <%- include("navbar.ejs") %>
+        <div id="sessionSummaryContainer" class="row mx-auto w-80 justify-content-center">
+            <div class="col-md-10 col-xs-12">
+                <nav class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
+                    <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%= `${String(profile._id) == String(user._id) ? "My" : `${profile.name.first} ${profile.name.last}'s`} Profile`%></h4>
+                </nav>
+                <div class="card h-100">
+                    <div class="card-body row">
+                        <h6 class="mb-1">Personal Details</h6>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName" class="form-control" type="text" placeholder="First Name">
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName" class="form-control" type="text" placeholder="Last Name">
+                        </div>
+                        <div class="form-group col-9">
+                            <label for="firstName">Email</label>
+                            <input id="firstName" class="form-control" type="text" placeholder="Email" disabled>
+                        </div>
+                        <div class="form-group col-md-3 col-12">
+                            <label for="lastName">Phone</label>
+                            <input id="lastName" class="form-control" type="tel">
+                        </div>
+                        <h6 class="mb-1">Parents</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
