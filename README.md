@@ -32,12 +32,68 @@ an editing software such as Virtual Studio Code.
 Visual Studio Code can be installed here: https://code.visualstudio.com/download
 Node.js can be installed here: https://nodejs.org/en/download/
 
-## Configuration and Running
+## Developmetn Configuration and Running
 1. Clone the project repository and open in VSCode
 2. Open a terminal window and use "npm i" to install the packages
 3. Once packages are installed, use "npm start" to run the application
 4. Navigate to localhost:8080 to see the app running in a web browser
 5. Use "CTRL + c" to stop the application run
+
+## Production Server Deployment
+
+1. Create a new EC2 instance used on Ubuntu.
+2. Open ports for HTTP and HTTPS when walking through the EC2 wizard.
+3. Generate a key pair for this EC2 instance. Download and save the private key, which is needed to connect to the instance in the future.
+4. After the EC2 instance is running, click on the Connect button the EC2 Management Console for instructions on how to ssh into the instance.
+5. On the EC2 instance, install Node.js v14 `curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs`
+6. On the EC2 instance, install nginx: sudo apt-get -y install nginx
+7. [Install certbot](https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca) to automate the generation and maintenance of SSL certificates so HTTPS works:
+8. `sudo add-apt-repository ppa:certbot/certbot
+9. sudo apt-get update
+10. sudo apt-get install certbot python3-certbot-nginx`
+11. Create a reverse proxy for the The Merry Tutor node server. In the file /etc/nginx/sites-enabled/themerrytutor:
+
+<pre>
+server {
+	# listen on port 80 (http)
+	listen 80;
+	server_name ec2-3-128-33-127.us-east-2.compute.amazonaws.com;
+	location / {
+		# redirect any requests to the same URL but on https
+		return 301 https://$host$request_uri;
+	}
+}
+
+server {
+	# listen on port 443 (https)
+	listen 443 ssl;
+	server_name ec2-3-128-33-127.us-east-2.compute.amazonaws.com;
+	
+ 	# write access and error logs to /var/log
+ 	access_log /var/log/themerrytutor_access.log;
+ 	error_log /var/log/themerrytutor_error.log;
+
+ 	location / {
+ 		# forward application requests to the node server
+ 		proxy_pass http://localhost:8080;
+ 		proxy_redirect off;
+ 		proxy_set_header Host $host;
+ 		proxy_set_header X-Real-IP $remote_addr;
+ 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ 	}
+}
+</pre>
+
+8. Restart the nginx server: sudo service nginx reload
+9. Clone this repository.
+10. Inside of the server directory for this repository: 
+11. `npm install
+12. node app.js`
+13. !!! figure out certbot SSL
+14. !!! install mongoDB locally
+15. !!! change code to switch from remote to local MongoDB based on production flag
+16. 
 
 ## Contribute
 Pull requests are currently welcome.
