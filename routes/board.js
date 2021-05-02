@@ -42,7 +42,7 @@ router.get("/addtutor", async (req,res) => {
 
 router.post("/addtutor", async (req, res) => {
     let formData = req.body;
-    await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase());
+    await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase(), formData["new-tutor-graduation-year"]);
     res.render("addtutor", { user: req.user, formData: formData });
     res.status(201);
 });
@@ -100,7 +100,7 @@ Matching priority:
 2. email
 3. name (first and last)
  */
-async function getOrMakeTutor(google_sub, email, given_name, family_name) {
+async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_year) {
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
@@ -114,7 +114,8 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name) {
             email: email,
             google_sub: google_sub,
             roles: ["tutor"],
-            children: []
+            children: [],
+            grad_year: grad_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
     } else {
