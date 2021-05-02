@@ -72,8 +72,6 @@ async function doLogin() { //add click listener to #google-login button which wi
                                         email,
                                         gradYear
                                     };
-                                    console.log(newUserData);  //debugging purposes
-                                    console.log(newUserData.newChildData); //debugging purposes
                                     await submitNewUserData(newUserData);
                                     window.location = window.location.origin;
                                 }
@@ -94,7 +92,6 @@ async function doLogin() { //add click listener to #google-login button which wi
                     if (emails.length == 0 || emails.every((email) => emailRegExp.test(email)) && gradYear) { // if no email or all emails are valid, submit it
                         newUserData.gradYear = gradYear
                         newUserData.parentEmails = emails;
-                        console.log(newUserData); //debugging purposes
                         await submitNewUserData(newUserData);
                         window.location = window.location.origin;
                     }

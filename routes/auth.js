@@ -51,7 +51,6 @@ router.post("/v1/newUser", async (req, res) => {
     if (!req.user || req.user.roles.length != 0) return;
     let newUserData = req.body;
     let user = req.user;
-    console.log(newUserData);
     if (newUserData.isParent) {
         user.roles.push("parent");
         if (newUserData.existingChildEmail) {
@@ -69,8 +68,6 @@ router.post("/v1/newUser", async (req, res) => {
                 children: [],
                 graduation_year: newUserData.newChildData.gradYear
             }
-            console.log("Child:")
-            console.log(child);
             user.children.push(String((await usersCollection.insertOne(child)).ops[0]._id));
             await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
         } 
