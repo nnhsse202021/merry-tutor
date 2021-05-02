@@ -26,9 +26,11 @@ mongoClient.connect(err => {
             last: "Last"
         },
         email: "example@gmail.com", (optional)
-        google_sub: "string" (optional)
+        google_sub: "string", (optional)
         roles: ["tutee", "parent", "tutor", "board"],
         children: ["id1", "id2"],
+        graduation_year: XXXX (omtitted only if parent),
+
     }
 */
 router = express.Router();
@@ -39,7 +41,7 @@ router.post("/v1/google", async (req, res) => { //login.js sends the id_token to
         audience: CLIENT_ID
     });
     let {sub, email, given_name, family_name} = ticket.getPayload(); //get the user data we care about from the id_token
-    let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase()); //call this function to get a reference to the user that's stored in the database
+    let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase(), null); //call this function to get a reference to the user that's stored in the database
     req.session.userId = user._id; //sets "userId" on the session to the id of the user in the database
     res.status(201);
     res.json(user);
@@ -64,14 +66,18 @@ router.post("/v1/newUser", async (req, res) => {
                 email: newUserData.newChildData.email,
                 google_sub: null,
                 roles: ["tutee"],
-                children: []
+                children: [],
+                graduation_year: newUserData.newChildData.gradYear
             }
+            console.log("Child:")
+            console.log(child);
             user.children.push(String((await usersCollection.insertOne(child)).ops[0]._id));
             await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
         } 
-    } else {
+    } else { // user is a tutee
+        user.graduation_year = newUserData.gradYear //update tutee with graduation year
         user.roles.push("tutee");
-        console.log(newUserData.parentEmails) // we can send them an email, or do something to allow them to make an account
+        // currently not storing parent email
     }
     await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
     res.json(true);
@@ -83,7 +89,7 @@ Matching priority:
 2. email
 3. name (first and last)
 */
-async function getOrMakeUser(google_sub, email, given_name, family_name) {
+async function getOrMakeUser(google_sub, email, given_name, family_name, graduation_year) {
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
@@ -97,7 +103,8 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
             email: email,
             google_sub: google_sub,
             roles: [],
-            children: []
+            children: [],
+            graduation_year: graduation_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
     } else {
@@ -107,7 +114,8 @@ async function getOrMakeUser(google_sub, email, given_name, family_name) {
                 last: family_name
             },
             email: email,
-            google_sub: google_sub
+            google_sub: google_sub,
+            graduation_year: graduation_year 
         });
         await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
