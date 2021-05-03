@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded()); //body parser for urlencoded
 const { MongoClient, ObjectID } = require("mongodb");
 const { Router } = require("express");
 
-const mongoHost;
+let mongoHost;
 if(${process.env.PRODUCTION}) {
 	console.log("Running on production server...");
 	mongoHost = "localhost";
