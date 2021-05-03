@@ -77,9 +77,16 @@ server {
 10. Inside of the server directory for this repository: 
 11. `npm install
 12. node app.js`
-14. !!! install mongoDB locally
-15. !!! change code to switch from remote to local MongoDB based on production flag
-16. 
+14. install mongoDB locally
+15. 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+16. 	use apt
+17. secure mongoDB: https://docs.mongodb.com/guides/server/auth/
+18. 	update /etc/mongod.conf with security.authorization enabled: https://docs.mongodb.com/manual/reference/configuration-options/#mongodb-setting-security.authorization
+19. 	
+20. update .env to add PRODUCTION=TRUE and MONGO_PASSWORD
+21
+22. !!! change code to switch from remote to local MongoDB based on production flag
+23. 
 
 ## Contribute
 Pull requests are currently welcome.
