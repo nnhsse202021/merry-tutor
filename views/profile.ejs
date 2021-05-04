@@ -32,20 +32,22 @@
                     <% if (profile.roles.includes("tutee")) { %>
                     <div id="deleteParent" class="card-body row mb-0">
                         <h6 class="mb-1">Parents</h6>
+                        <% for (let parent of parents) { %>
                         <div class="row gx-1 px-3">
                             <div class="form-group col-md-3 col-6">
-                                <input class="form-control" type="text" placeholder="First Name" disabled>
+                                <input class="form-control" type="text" placeholder="First Name" disabled value="<%= parent.name.first %>">
                             </div>
                             <div class="form-group col-md-3 col-6">
-                                <input class="form-control" type="text" placeholder="Last Name" disabled>
+                                <input class="form-control" type="text" placeholder="Last Name" disabled value="<%= parent.name.last %>">
                             </div>
                             <div class="form-group col-md-5 col-9">
-                                <input class="form-control" type="email" placeholder="Email" disabled>
+                                <input class="form-control" type="email" placeholder="Email" disabled value="<%= parent.email %>">
                             </div>
                             <div class="form-group col-md-1 col-3">
                                 <button type="button" class="form-control btn btn-danger" data-toggle="modal" data-target="#deleteParentConfirm" style="height: 2.3rem"><i class="bi bi-trash"></i> </button>
                             </div>
                         </div>
+                        <% } %>
                     </div>
                     <div class="modal fade" id="deleteParentConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -53,7 +55,7 @@
                             <div class="modal-header">
                               <h5 class="modal-title" id="exampleModalLabel">Confirm Removing Parent</h5>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" id="removeParentConfirmText">
                               Are you sure you want to remove ${name} as a parent?
                             </div>
                             <div class="modal-footer">

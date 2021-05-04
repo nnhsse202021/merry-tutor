@@ -23,13 +23,17 @@ router.get("/:_id?", async (req,res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
+
     let profile = await usersCollection.findOne({_id: new ObjectID(req.params._id || req.user._id)});
-    
-    profile.name.first = profile.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
+    profile.name.first = profile.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" "); //make names pretty
     profile.name.last = profile.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
     
-    console.log(profile)
-    res.render("profile", {user: req.user, profile});
+    let parents = await usersCollection.find({children: String(profile._id)}).toArray();
+    for (let parent of parents) {
+        parent.name.first = parent.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" "); //make names pretty
+        parent.name.last = parent.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
+    }
+    res.render("profile", {user: req.user, profile, parents});
 })
 
 module.exports = router;
