@@ -30,4 +30,23 @@ document.querySelector("#removeParent").addEventListener("click", async () => {
             "Content-Type": "application/json"
         }
     });
+    if (await res.json()) {
+        window.location.reload();
+    } else {
+        document.querySelector("#errorBox").innerHTML = "Error removing parent.";
+        document.querySelector("#errorBox").style.display = "block"
+    }
+})
+
+document.querySelector("#addParentBtn").addEventListener("click", async () => {
+    let res = await fetch(window.location.href + "/addParent", { //send data to server
+        method: "POST",
+        body: new URLSearchParams(new FormData(document.querySelector("#addParent")))
+    })
+    if (await res.json()) {
+        window.location.reload();
+    } else {
+        document.querySelector("#errorBox").innerHTML = "Error adding parent.";
+        document.querySelector("#errorBox").style.display = "block"
+    }
 })
