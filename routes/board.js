@@ -16,7 +16,7 @@ mongoClient.connect(err => {
 
 router.get("/allsummaries", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
-        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
@@ -30,7 +30,7 @@ router.get("/allsummaries", async (req,res) => {
 
 router.get("/addtutor", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
-        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
@@ -49,7 +49,7 @@ router.post("/addtutor", async (req, res) => {
 
 router.get("/removetutor", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
-        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
@@ -72,7 +72,7 @@ router.post("/removetutor", async (req, res) => {
 
 router.get("/addboard", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
-        res.status(401).render("error", {code: 403, description: "You must be logged in to preform this action."});
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});

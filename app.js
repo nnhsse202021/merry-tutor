@@ -13,6 +13,7 @@ app.use(bodyParser.json()); //body parser for json
 app.use(bodyParser.urlencoded()); //body parser for urlencoded
 
 const { MongoClient, ObjectID } = require("mongodb");
+const { Router } = require("express");
 const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.kfvlj.mongodb.net/merry-tutor?retryWrites=true&w=majority`;
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -43,6 +44,7 @@ app.use("/auth", require("./routes/auth.js"));
 app.use("/autocomplete", require("./routes/autocomplete.js"));
 app.use("/board", require("./routes/board.js"));
 app.use("/parent", require("./routes/parent.js"));
+app.use("/export", require("./routes/export.js"));
 app.use("/profile", require("./routes/profile.js"));
 app.get("/", (req,res) => {
     res.render("index.ejs", {user: req.user});
@@ -50,6 +52,16 @@ app.get("/", (req,res) => {
 
 app.get("/login", (req,res) => {
     res.render("login");
+})
+
+//error handler
+app.use((err, req, res, next) => {
+    console.log(err.stack);
+    res.status(500).render("error", {code: 500, description: "Internal Server Error"})
+})
+
+app.use((req,res,next) => {
+    res.status(404).render("error", {code: 404, description: "The Requested Page Was Not Found"})
 })
 
 app.listen(8080, () => {console.log("Listening on port 8080")});
