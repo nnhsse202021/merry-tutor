@@ -24,7 +24,11 @@ router.get("/:_id?", async (req,res) => {
         return;
     }
     let profile = await usersCollection.findOne({_id: new ObjectID(req.params._id || req.user._id)});
-
+    
+    profile.name.first = profile.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
+    profile.name.last = profile.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
+    
+    console.log(profile)
     res.render("profile", {user: req.user, profile});
 })
 
