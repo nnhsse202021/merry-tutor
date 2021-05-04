@@ -49,8 +49,8 @@ router.post("/:_id?/update", async (req,res) => {
     if ((await usersCollection.updateOne({_id: new ObjectID(req.params._id || req.user._id)}, 
         {$set: {
             name: {
-                first: req.body.firstName,
-                last: req.body.lastName
+                first: req.body.firstName.toLowerCase(),
+                last: req.body.lastName.toLowerCase()
             }
         }}
     )).modifiedCount != 0) { //check the number of documents modified (1+=worked, 0=didnt work) and send that information to the client

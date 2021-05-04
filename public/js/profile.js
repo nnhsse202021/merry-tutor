@@ -3,11 +3,12 @@ document.querySelector("#submitProfile").addEventListener("click", async () => {
         method: "POST",
         body: new URLSearchParams(new FormData(document.querySelector("#profile")))
     })
+    hideAlerts()
     if (await res.json()) {
         document.querySelector("#successBox").innerHTML = "Profile information updated!";
         document.querySelector("#successBox").style.display = "block"
     } else {
-        document.querySelector("#errorBox").innerHTML = "Error updating profile information.";
+        document.querySelector("#errorBox").innerHTML = "Error updating profile information (this may be because there is no information to update).";
         document.querySelector("#errorBox").style.display = "block"
     }
 })
@@ -30,6 +31,7 @@ document.querySelector("#removeParent").addEventListener("click", async () => {
             "Content-Type": "application/json"
         }
     });
+    hideAlerts()
     if (await res.json()) {
         window.location.reload();
     } else {
@@ -43,6 +45,7 @@ document.querySelector("#addParentBtn").addEventListener("click", async () => {
         method: "POST",
         body: new URLSearchParams(new FormData(document.querySelector("#addParent")))
     })
+    hideAlerts()
     if (await res.json()) {
         window.location.reload();
     } else {
@@ -50,3 +53,9 @@ document.querySelector("#addParentBtn").addEventListener("click", async () => {
         document.querySelector("#errorBox").style.display = "block"
     }
 })
+
+function hideAlerts() {
+    for (let alert of document.querySelector("#profileAlerts").children) {
+        alert.style.display = "none";
+    }
+}
