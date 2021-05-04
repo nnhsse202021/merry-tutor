@@ -38,6 +38,23 @@ router.get("/:_id?", async (req,res) => {
 
 router.post("/:_id?/update", async (req,res) => {
     console.log(req.body);
+    if (!req.user) { //if you arent logged in err
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
+        return;
+    } else if (!(req.user.roles.includes("board")) && req.params._id && req.user._id != req.params._id) { //if you are not board, you requested a specific id, and that id isnt you, err
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
+    }
+
+    await usersCollection.updateOne({_id: new ObjectID(req.params._id || req.user._id)}, 
+        {$set: {
+            name: {
+                first: req.body.firstName,
+                last: req.body.lastName
+            }
+        }});
+
+    res.json(true);
 })
 
 router.post("/:_id?/removeParent", async (req,res) => {

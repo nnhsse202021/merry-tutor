@@ -3,7 +3,13 @@ document.querySelector("#submitProfile").addEventListener("click", async () => {
         method: "POST",
         body: new URLSearchParams(new FormData(document.querySelector("#profile")))
     })
-    console.log(res);
+    if (await res.json()) {
+        document.querySelector("#successBox").innerHTML = "Profile information updated!";
+        document.querySelector("#successBox").style.display = "block"
+    } else {
+        document.querySelector("#errorBox").innerHTML = "Error updating profile information.";
+        document.querySelector("#errorBox").style.display = "block"
+    }
 })
 
 for (let parentRemoveButton of document.querySelectorAll(".remove-parent")) {
@@ -23,6 +29,5 @@ document.querySelector("#removeParent").addEventListener("click", async () => {
         headers: {
             "Content-Type": "application/json"
         }
-    })
-    console.log(res)
+    });
 })
