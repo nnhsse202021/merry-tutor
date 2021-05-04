@@ -113,8 +113,23 @@ switched to db merry-tutor
 { "ok" : 1 }
 ```
 
-18. From the repository directory, start the node server: `node app.js`
-19. Configure pm2!!!
+18. Install Production Manager 2, which is used to keep the node server running and restart it when changes are pushed to master:
+
+```
+sudo npm install pm2 -g
+sudo pm2 start app.js
+```
+
+19. Verify that the node server is running: `sudo pm2 list`
+20. Configure pm2 to automatically run when the EC2 instance restarts: `sudo pm2 startup`
+21. Add a crontab entry to pull from GitHub every minute: `crontab -e`
+
+```
+*/1 * * * * cd /home/ubuntu/merry-tutor && git pull
+```
+
+22. Restart the node server: `sudo pm2 restart app`
+
 
 ## Contribute
 Pull requests are currently welcome.
