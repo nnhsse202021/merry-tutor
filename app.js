@@ -15,16 +15,17 @@ app.use(bodyParser.urlencoded()); //body parser for urlencoded
 const { MongoClient, ObjectID } = require("mongodb");
 const { Router } = require("express");
 
-let mongoHost;
-if(${process.env.PRODUCTION}) {
+if(process.env.PRODUCTION) {
 	console.log("Running on production server...");
-	mongoHost = "localhost";
+	var protocol = "mongodb":
+	var mongoHost = "localhost";
 }
 else {
 	console.log("Running for development...");
-	mongoHost = "cluster0.kfvlj.mongodb.net/merry-tutor";
+	var protocol = "mongodb+srv":
+	var mongoHost = "cluster0.kfvlj.mongodb.net";
 }
-const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@${mongoHost}?retryWrites=true&w=majority`;
+const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 /* Middleware to attach user data to all requests */

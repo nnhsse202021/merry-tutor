@@ -6,7 +6,17 @@ let oAuth2Client = new OAuth2Client(CLIENT_ID);
 
 // import the MongoClient class and make a client with the url to our database
 const MongoClient = require('mongodb').MongoClient;
-const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.kfvlj.mongodb.net/merry-tutor?retryWrites=true&w=majority`;
+if(process.env.PRODUCTION) {
+	console.log("Running on production server...");
+	var protocol = "mongodb":
+	var mongoHost = "localhost";
+}
+else {
+	console.log("Running for development...");
+	var protocol = "mongodb+srv":
+	var mongoHost = "cluster0.kfvlj.mongodb.net";
+}
+const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // connect to the client and pass a reference to the Users collection to the global scope so we can use it later
