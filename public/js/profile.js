@@ -1,5 +1,5 @@
 document.querySelector("#submitProfile").addEventListener("click", async () => {
-    let res = await fetch(window.location.href + "/update", { //send data to server
+    let res = await fetch(window.location.pathname + "/update", { //send data to server
         method: "POST",
         body: new URLSearchParams(new FormData(document.querySelector("#profile")))
     })
@@ -22,7 +22,7 @@ for (let parentRemoveButton of document.querySelectorAll(".remove-parent")) {
 
 document.querySelector("#removeParent").addEventListener("click", async () => {
     console.log(document.querySelector("#removeParentConfirm").removeId)
-    let res = await fetch(window.location.href + "/removeParent", {
+    let res = await fetch(window.location.pathname + "/removeParent", {
         method: "POST",
         body: JSON.stringify({
             _id: document.querySelector("#removeParentConfirm").removeId
@@ -41,7 +41,7 @@ document.querySelector("#removeParent").addEventListener("click", async () => {
 })
 
 document.querySelector("#addParentBtn").addEventListener("click", async () => {
-    let res = await fetch(window.location.href + "/addParent", { //send data to server
+    let res = await fetch(window.location.pathname + "/addParent", { //send data to server
         method: "POST",
         body: new URLSearchParams(new FormData(document.querySelector("#addParent")))
     })
