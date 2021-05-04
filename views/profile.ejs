@@ -10,7 +10,7 @@
                     <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%= `${String(profile._id) == String(user._id) ? "My" : `${profile.name.first} ${profile.name.last}'s`} Profile`%></h4>
                 </nav>
                 <div class="card h-100">
-                    <form id="profile" class="card-body row mb-0">
+                    <form id="profile" class="card-body row mb-0" action="NONE">
                         <h6 class="mb-1">Personal Details</h6>
                         <div class="form-group col-md-6 col-12">
                             <label for="firstName">First Name</label>
@@ -28,6 +28,10 @@
                             <label for="phone">Phone</label>
                             <input id="phone" name="phone" class="form-control" type="tel" value="<%= profile.phone %>">
                         </div>
+                        <div class="form-group mt-4">
+                            <input id="submitProfile" type="button" class="btn btn-primary" value="Submit Changes">
+                            <input type="reset" class="btn btn-secondary" value="Reset">
+                        </div>
                     </form>
                     <% if (profile.roles.includes("tutee")) { %>
                     <div id="deleteParent" class="card-body row mb-0">
@@ -44,12 +48,12 @@
                                 <input class="form-control" type="email" placeholder="Email" disabled value="<%= parent.email %>">
                             </div>
                             <div class="form-group col-md-1 col-3">
-                                <button type="button" class="form-control btn btn-danger" data-toggle="modal" data-target="#deleteParentConfirm" style="height: 2.3rem"><i class="bi bi-trash"></i> </button>
+                                <button type="button" class="remove-parent form-control btn btn-danger" parentId="<%= parent._id %>" parentName="<%=`${parent.name.first} ${parent.name.last}` %>" data-toggle="modal" data-target="#removeParentConfirm" style="height: 2.3rem"><i class="bi bi-trash"></i> </button>
                             </div>
                         </div>
                         <% } %>
                     </div>
-                    <div class="modal fade" id="deleteParentConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="removeParentConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -60,7 +64,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
+                              <button id="removeParent" type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
                             </div>
                           </div>
                         </div>
@@ -80,6 +84,6 @@
                 </div>
             </div>
         </div>
-        
+        <script src="/js/profile.js"></script>
     </body>
 </html>

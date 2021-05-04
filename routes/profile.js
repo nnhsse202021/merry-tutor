@@ -36,4 +36,11 @@ router.get("/:_id?", async (req,res) => {
     res.render("profile", {user: req.user, profile, parents});
 })
 
+router.post("/:_id?/update", async (req,res) => {
+    console.log(req.body);
+})
+
+router.post("/:_id?/removeParent", async (req,res) => {
+    console.log(req.body);
+})
 module.exports = router;
