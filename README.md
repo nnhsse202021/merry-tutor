@@ -45,48 +45,68 @@ Node.js can be installed here: https://nodejs.org/en/download/
 2. Open ports for HTTP and HTTPS when walking through the EC2 wizard.
 3. Generate a key pair for this EC2 instance. Download and save the private key, which is needed to connect to the instance in the future.
 4. After the EC2 instance is running, click on the Connect button the EC2 Management Console for instructions on how to ssh into the instance.
-5. On the EC2 instance, install Node.js v14 `curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt-get install -y nodejs`
-6. On the EC2 instance, install nginx: sudo apt-get -y install nginx
+5. On the EC2 instance, install Node.js v14
+
+	curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+	sudo apt-get install -y nodejs
+
+6. On the EC2 instance, install nginx: `sudo apt-get -y install nginx`
 7. Create a reverse proxy for the The Merry Tutor node server. In the file /etc/nginx/sites-enabled/themerrytutor:
 
-<pre>
-server {
-	# listen on port 80 (http)
-	listen 80;
-	server_name themerrytutor.nnhsse.org;
+   server {
+	   # listen on port 80 (http)
+	   listen 80;
+	   server_name themerrytutor.nnhsse.org;
 	
- 	# write access and error logs to /var/log
- 	access_log /var/log/themerrytutor_access.log;
- 	error_log /var/log/themerrytutor_error.log;
+	   # write access and error logs to /var/log
+	   access_log /var/log/themerrytutor_access.log;
+	   error_log /var/log/themerrytutor_error.log;
 
- 	location / {
- 		# forward application requests to the node server
- 		proxy_pass http://localhost:8080;
- 		proxy_redirect off;
- 		proxy_set_header Host $host;
- 		proxy_set_header X-Real-IP $remote_addr;
- 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
- 	}
-}
-</pre>
+	   location / {
+		   # forward application requests to the node server
+		   proxy_pass http://localhost:8080;
+		   proxy_redirect off;
+		   proxy_set_header Host $host;
+		   proxy_set_header X-Real-IP $remote_addr;
+		   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	   }
+   }
 
-8. Restart the nginx server: sudo service nginx reload
+8. Restart the nginx server: `sudo service nginx reload`
 9. Install and configure [certbot](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)
-9. Clone this repository.
-10. Inside of the server directory for this repository: 
-11. `npm install
-12. node app.js`
-14. install mongoDB locally
-15. 	https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
-16. 	use apt
-17. secure mongoDB: https://docs.mongodb.com/guides/server/auth/
-18. 	update /etc/mongod.conf with security.authorization enabled: https://docs.mongodb.com/manual/reference/configuration-options/#mongodb-setting-security.authorization
-19. 	
-20. update .env to add PRODUCTION=TRUE and MONGO_PASSWORD
-21
-22. !!! change code to switch from remote to local MongoDB based on production flag
-23. 
+10. Clone this repository from GitHub.
+11. Inside of the directory for this repository install the node dependencies: `npm install`
+12. [Install mongoDB locally](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/) using apt.
+13. [Secure the installation](https://docs.mongodb.com/guides/server/auth/) of mongoDB.
+14. Update /etc/mongod.conf with [security.authorization enabled](https://docs.mongodb.com/manual/reference/configuration-options/#mongodb-setting-security.authorization).
+15. Update the .env file:
+
+	PRODUCTION=TRUE
+	MONGO_PASSWORD=admin-user-password
+
+16. Create the admin user for the merry-tutor database via mongo shell:
+
+	> use merry-tutor
+	switched to db merry-tutor
+	> db.createUser(
+	...   {
+	...     user: "admin",
+	...     pwd: "admin-user-password",
+	...     roles: ["readWrite", "dbAdmin"]
+	...   }
+	... )
+
+17. While still in the mongo shell, create the Users and Summaries collections:
+
+	> use merry-tutor
+	switched to db merry-tutor
+	> db.createCollection("Users")
+	{ "ok" : 1 }
+	> db.createCollection("Summaries")
+	{ "ok" : 1 }
+
+18. From the repository directory, start the node server: `node app.js`
+19. Configure pm2!!!
 
 ## Contribute
 Pull requests are currently welcome.
