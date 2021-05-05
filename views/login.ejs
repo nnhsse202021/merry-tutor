@@ -52,7 +52,7 @@
                     <hr>
                     <form>
                         <label class="form-label" for="tutee-email">Tutee Email</label><br>
-                        <input type="text" name="tutee-email" placeholder="tutee@gmail.com"><br><br>
+                        <input type="text" name="tutee-email" placeholder="tutee@email.com"><br><br>
                         <input type="button" id="child-link-next" value="Next">
                     </form>
                 </div>
@@ -67,12 +67,18 @@
                             <label class="form-label" for="tutee-name">Tutee Name</label><br>
                             <input type="text" name="tutee-name" placeholder="Last, First"><br><br>
                             <label class="form-label" for="tutee-email">Tutee Email (optional)</label><br>
-                            <input type="text" name="tutee-email" placeholder="tutee@gmail.com"><br><br>
+                            <input type="text" name="tutee-email" placeholder="tutee@email.com"><br><br>
                         </div>
                         <div class="parent-hide">
                             <label class="form-label" for="parent-email">Parent Email(s)</label><br>
-                            <input type="text" name="parent-email" placeholder="parent@gmail.com"><br><br>
+                            <input type="text" name="parent-email" placeholder="parent@email.com"><br><br>
                         </div>
+                        <label for="tutee-grad-year" class="form-label">Expected High School Graduation Year:</label><br>
+                        <input type="number" name="tutee-grad-year" id="tutee-grad-year" placeholder="YYYY" min="1970" max="9999"><br><br>
+                        <script>
+                            document.getElementById("tutee-grad-year").min = new Date().getFullYear();
+                            document.getElementById("tutee-grad-year").value = new Date().getFullYear();
+                        </script>
                         <input type="button" id="tutee-info-next" value="Next">
                     </form>
                 </div>
