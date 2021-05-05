@@ -45,6 +45,7 @@ app.use("/autocomplete", require("./routes/autocomplete.js"));
 app.use("/board", require("./routes/board.js"));
 app.use("/parent", require("./routes/parent.js"));
 app.use("/export", require("./routes/export.js"));
+app.use("/profile", require("./routes/profile.js"));
 app.get("/", (req,res) => {
     res.render("index.ejs", {user: req.user});
 })

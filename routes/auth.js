@@ -104,17 +104,6 @@ async function getOrMakeUser(google_sub, email, given_name, family_name, graduat
             graduation_year: graduation_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
-    } else {
-        Object.assign(user, { //update the user if we got any new information (this could probably be done a better way)
-            name: {
-                first: given_name,
-                last: family_name
-            },
-            email: email,
-            google_sub: google_sub,
-            graduation_year: graduation_year 
-        });
-        await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
     return user; //return the user (either newly made or updated)
 }
