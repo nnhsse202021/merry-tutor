@@ -87,7 +87,7 @@ router.post("/:_id?/addParent", async (req,res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
-    if ((await usersCollection.updateOne({email: req.body.email}, //find the parent by email and add the child's id to their children array
+    if ((await usersCollection.updateOne({email: req.body.email, roles: "parent"}, //find the parent by email and add the child's id to their children array
         {$push: {
             children: String(req.params._id || req.user._id)
         }}
