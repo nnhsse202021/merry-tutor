@@ -71,10 +71,12 @@ async function doLogin() { //add click listener to #google-login button which wi
                                 let email = document.querySelector("#tutee-info input[name=tutee-email]").value;
                                 let name = {};
                                 [name.last, name.first] = document.querySelector("#tutee-info input[name=tutee-name]").value.replace(", ",",").split(",");
-                                if ( name.last && name.first && (!email || emailRegExp.test(email)) ) {
+                                gradYear = parseInt(document.getElementById("tutee-grad-year").value)
+                                if ( name.last && name.first && (!email || emailRegExp.test(email)) && gradYear) {
                                     newUserData.newChildData = {
                                         name,
-                                        email
+                                        email,
+                                        gradYear
                                     };
                                     await submitNewUserData(newUserData);
                                     window.location = "/parent/mytuteesummaries";
@@ -91,7 +93,9 @@ async function doLogin() { //add click listener to #google-login button which wi
                 document.querySelector("#tutee-info-next").addEventListener("click", async () => { //on clicking the "next button"
                     let emails = document.querySelector("input[name='parent-email']").value.replace(", ",",").split(",");
                     if (emails.length == 1 && emails[0] == "") emails = [];
-                    if (emails.length == 0 || emails.every((email) => emailRegExp.test(email))) { // if no email or all emails are valid, submit it
+                    gradYear = parseInt(document.getElementById("tutee-grad-year").value)
+                    if (emails.length == 0 || emails.every((email) => emailRegExp.test(email)) && gradYear) { // if no email or all emails are valid, submit it
+                        newUserData.gradYear = gradYear
                         newUserData.parentEmails = emails;
                         await submitNewUserData(newUserData);
                         window.location = "/tutee/" + user._id;

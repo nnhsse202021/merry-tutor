@@ -7,16 +7,16 @@
         <h1>Add a New Tutor</h1>
         <form method="POST">
             <div class="mb-3">
-                <label for="new-tutor-first-name" class="form-label">Tutor's first name</label>
-                <input type="text" class="form-control" name="new-tutor-first-name" id="new-tutor-first-name" placeholder="Mary">
-            </div>
-            <div class="mb-3">
-                <label for="new-tutor-last-name" class="form-label">Tutor's last name</label>
-                <input type="text" class="form-control" name="new-tutor-last-name" id="new-tutor-last-name" placeholder="Tudor">
-            </div>
-            <div class="mb-3">
                 <label for="tutorEmail" class="form-label">Tutor's email address</label>
-                <input type="email" class="form-control" name="new-tutor-email" id="new-tutor-email" placeholder="name@example.com">
+                <input type="email" class="form-control" name="new-tutor-email" id="new-tutor-email" placeholder="name@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="new-tutor-graduation-year" class="form-label">Tutor's graduation year</label>
+                <input type="text" class="form-control" name="tutor-graduation-year" id="new-tutor-graduation-year" required>
+                <script>
+                    document.getElementById("new-tutor-graduation-year").min = new Date().getFullYear();
+                    document.getElementById("new-tutor-graduation-year").placeholder = new Date().getFullYear();
+                </script>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
