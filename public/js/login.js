@@ -27,7 +27,8 @@ async function doLogin() { //add click listener to #google-login button which wi
                 "Content-Type": "application/json"
             }
         })
-        let user = await res.json();
+        var user = await res.json();
+        console.log(user);
         //check if user has roles, if they do, assume they don't need more data. If they don't, send them through the first time login flow
         if (user.roles.length != 0) {
             if(user.roles.includes("tutor")){
@@ -42,6 +43,8 @@ async function doLogin() { //add click listener to #google-login button which wi
             return;
         }
     }
+    console.log("Second Time")
+    console.log(user)
     //role select screen
     showSlide("role-select");
     for (let button of document.querySelectorAll("#role-select .signin-opts button")) {
@@ -98,7 +101,9 @@ async function doLogin() { //add click listener to #google-login button which wi
                         newUserData.gradYear = gradYear
                         newUserData.parentEmails = emails;
                         await submitNewUserData(newUserData);
+                        console.log(user);
                         window.location = "/tutee/" + user._id;
+                        console.log("test");
                     }
                 })
             }
