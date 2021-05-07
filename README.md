@@ -47,8 +47,10 @@ Node.js can be installed here: https://nodejs.org/en/download/
 4. After the EC2 instance is running, click on the Connect button the EC2 Management Console for instructions on how to ssh into the instance.
 5. On the EC2 instance, install Node.js v14
 
+```
     curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
     sudo apt-get install -y nodejs
+```
 
 6. On the EC2 instance, install nginx: `sudo apt-get -y install nginx`
 7. Create a reverse proxy for the The Merry Tutor node server. In the file /etc/nginx/sites-enabled/themerrytutor:
