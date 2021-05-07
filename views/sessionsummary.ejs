@@ -32,7 +32,7 @@
                 <small id="shadow-name-help" class="form-text text-muted">If there was a new tutor shadowing your session, please show them how to fill out this session summary form and put their full name.</small>
             </div>
                 
-            <div class="mb-3">
+            <div class="mb-3" id="subjects">
                 <label>Subject(s) Tutored</label><br>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="subject" id="subject1" value="math">
@@ -52,7 +52,9 @@
                 </div>
                 <% if (typeof formData != 'undefined') {%>
                     <script>
-                        document.querySelector("#subject").value = <%= formData['subject'] %> || document.querySelector("#subject").value
+                        for (checkbox of document.getElementsByName("subject")){
+                            checkbox.checked = "<%=formData.subject%>".split(",").includes(checkbox.value)
+                        }
                     </script>
                 <% } %>
             </div>
