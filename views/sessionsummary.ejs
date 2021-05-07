@@ -8,12 +8,18 @@
         <form method="POST">
             <div class="mb-3">
                 <label class="form-label" for="session-date">Session Date</label>
-                <input class="form-control" type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>" required>
+                <input class="form-control" type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>" value="" required>
+                <script>
+                    document.getElementById("session-date").valueAsDate = new Date();
+                </script>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tutor-name">Tutor Name</label>
-                <input class="form-control" type="text" id ="tutor-name" name="tutor-name"  placeholder="Last, First" aria-describedby="tutor-name-help" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
+                <input class="form-control" type="text" id ="tutor-name" name="tutor-name" style="text-transform: capitalize" placeholder="Last, First" aria-describedby="tutor-name-help" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
                 <small id="tutor-name-help" class="form-text text-muted">YOU are the tutor. Please put your full name.</small>
+                <script>
+                    document.getElementById("tutor-name").value = "<%=user.name.last%>, <%=user.name.first%>"
+                </script>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tutee-name">Tutee Name</label>
@@ -25,28 +31,6 @@
                 <input class="form-control" type="text" id="shadow-name" name="shadow-name" placeholder="Last, First" aria-describedby="shadow-name-help" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>">
                 <small id="shadow-name-help" class="form-text text-muted">If there was a new tutor shadowing your session, please show them how to fill out this session summary form and put their full name.</small>
             </div>
-            <label class="form-label" for="tutee-grade">Tutee Grade</label>
-            <select class="form-select" id="tutee-grade" name="tutee-grade" required>
-                <option selected>No grade selected</option>
-                <option value="K">K</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select><br>
-            <% if (typeof formData != 'undefined') {%>
-                <script>
-                    document.querySelector("#tutee-grade").value = <%= formData['tutee-grade'] %> || document.querySelector("#tutee-grade").value
-                </script>
-            <% } %>
                 
             <div class="mb-3">
                 <label>Subject(s) Tutored</label><br>
