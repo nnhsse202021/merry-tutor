@@ -27,21 +27,30 @@ async function doLogin() { //add click listener to #google-login button which wi
                 "Content-Type": "application/json"
             }
         })
-        let user = await res.json();
-
+        var user = await res.json();
+        console.log(user);
         //check if user has roles, if they do, assume they don't need more data. If they don't, send them through the first time login flow
         if (user.roles.length != 0) {
-            window.location = window.location.origin;
+            if(user.roles.includes("tutor")){
+                window.location = "/summary/new";
+            } else if(user.roles.includes("parent")){
+                window.location = "/parent/mytuteesummaries";
+            } else if(user.roles.includes("tutee")){
+                window.location = "/tutee/" + user._id;
+            } else{
+                window.location = window.location.origin;
+            }
             return;
         }
     }
-
+    console.log("Second Time")
+    console.log(user)
     //role select screen
     showSlide("role-select");
     for (let button of document.querySelectorAll("#role-select .signin-opts button")) {
         button.addEventListener("click", () => {
             newUserData.isParent = button.id == "role-parent"; //if they are a parent, set isParent to true, else, set it to false
-            if (newUserData.isParent) { //if they selected parent, do this
+                if (newUserData.isParent) { //if they selected parent, do this
                 showSlide("parent-tutee-dialog");
                 for (let button of document.querySelectorAll("#parent-tutee-dialog .signin-opts button")) {
                     button.addEventListener("click", () => {
@@ -52,10 +61,10 @@ async function doLogin() { //add click listener to #google-login button which wi
                                 if (emailRegExp.test(email)) {
                                     newUserData.existingChildEmail = email;
                                     await submitNewUserData(newUserData);
-                                    window.location = window.location.origin;
+                                    window.location = "/parent/mytuteesummaries";
                                 }
                             })
-                        } else { //the parent's child doesnt have an account
+                        } else { //the parent's child doesn't have an account
                             for (let element of document.querySelectorAll(".parent-hide")) { //hide all the info that we already have about the tutee
                                 element.style.display = "none";
                             }
@@ -73,13 +82,12 @@ async function doLogin() { //add click listener to #google-login button which wi
                                         gradYear
                                     };
                                     await submitNewUserData(newUserData);
-                                    window.location = window.location.origin;
+                                    window.location = "/parent/mytuteesummaries";
                                 }
                             })
                         }
                     })
                 }
-
             } else { //if they selected tutee, do this
                 for (let element of document.querySelectorAll(".tutee-hide")) { //hide all the info that we already have about the tutee
                     element.style.display = "none";
@@ -93,7 +101,9 @@ async function doLogin() { //add click listener to #google-login button which wi
                         newUserData.gradYear = gradYear
                         newUserData.parentEmails = emails;
                         await submitNewUserData(newUserData);
-                        window.location = window.location.origin;
+                        console.log(user);
+                        window.location = "/tutee/" + user._id;
+                        console.log("test");
                     }
                 })
             }
