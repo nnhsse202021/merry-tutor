@@ -3,7 +3,17 @@ let express = require("express");
 let router = express.Router();
 
 const { MongoClient, ObjectID } = require('mongodb');
-const uri = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.kfvlj.mongodb.net/merry-tutor?retryWrites=true&w=majority`;
+if(process.env.PRODUCTION) {
+	console.log("Running on production server...");
+	var protocol = "mongodb";
+	var mongoHost = "localhost";
+}
+else {
+	console.log("Running for development...");
+	var protocol = "mongodb+srv";
+	var mongoHost = "cluster0.kfvlj.mongodb.net";
+}
+const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let usersCollection;
