@@ -4,21 +4,30 @@
     </head>
     <body>
         <%- include("navbar.ejs") %>
-        <h1>Add a New Tutor</h1>
-        <form method="POST">
-            <div class="mb-3">
-                <label for="tutorEmail" class="form-label">Tutor's email address</label>
-                <input type="email" class="form-control" name="new-tutor-email" id="new-tutor-email" placeholder="name@example.com" required>
+        <div id="sessionContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px">
+            <div class="col-md-10 col-12 mb-4">
+                <div class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
+                    <h4>Add Tutor</h4>
+                </div>
+                <div id="formContainer" class="card">
+                    <h5 class="card-header">Add Tutor</h5>
+                    <div class="card-body row">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="tutorEmail" class="form-label" >Tutor's email address</label>
+                                <input type="email" class="form-control" name="tutor-email" id="tutor-email" placeholder="name@example.com" required>
+                            </div>
+                            <button type="submit" id="submit" onclick="userConfirm()" class="btn btn-primary mb-3">Add Tutor</button>
+                            <script>
+                                // script to disable button if input is empty   
+                                function userConfirm(){
+                                    var r = confirm("Add a new tutor with the following email?: " + document.querySelector("#tutor-email").value);
+                                }
+                            </script>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="new-tutor-graduation-year" class="form-label">Tutor's graduation year</label>
-                <input type="text" class="form-control" name="tutor-graduation-year" id="new-tutor-graduation-year" required>
-                <script>
-                    document.getElementById("new-tutor-graduation-year").min = new Date().getFullYear();
-                    document.getElementById("new-tutor-graduation-year").placeholder = new Date().getFullYear();
-                </script>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+        </div>
     </body>
 </html>

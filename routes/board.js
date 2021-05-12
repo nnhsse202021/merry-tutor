@@ -52,7 +52,7 @@ router.get("/addtutor", async (req,res) => {
 
 router.post("/addtutor", async (req, res) => {
     let formData = req.body;
-    await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase(), formData["new-tutor-graduation-year"]);
+    await getOrMakeTutor(null, formData["tutor-email"].toLowerCase(), null, null, null);
     res.render("addtutor", { user: req.user, formData: formData });
     res.status(201);
 });
