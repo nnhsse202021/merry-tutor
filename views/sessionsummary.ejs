@@ -17,7 +17,9 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="tutee-name">Tutee Name</label>
-                <input class="form-control" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+                <div id="tutee-search-container" class="autocomplete w-100">
+                    <input class="form-control tutee-auto" autocomplete="off" name-format="last,first" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+                </div>
                 <small id="tutee-name-help" class="form-text text-muted">The person you tutored is the tutee. Please put their full name below.</small>
             </div>
             <div class="mb-3">
@@ -100,6 +102,6 @@
             
             <input type="submit" value="Submit">
         </form>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <script src="/js/autocomplete.js"></script>
     </body>
 </html>
