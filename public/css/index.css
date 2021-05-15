@@ -1,0 +1,19 @@
+h1, h2 {
+    color: var(--mt-red);
+}
+p {
+    color: var(--mt-gray);
+}
+
+
+.bg-mt-gold {
+    background: var(--mt-orange-white);
+}
+
+.bg-mt-red {
+    background: var(--mt-red-bg);
+}
+
+.bg-mt-red h1 {
+    color: var(--mt-light-gold)
+}
