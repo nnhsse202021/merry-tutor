@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <%- include("head.ejs") %>
+    </head>
+    <body>
+        <%- include("navbar.ejs") %>
+        <div id="managerContainer"class="row mx-auto w-80 justify-content-center" style="max-width: 1800px;">
+            <div id="profileAlerts" class="col-md-10 col-12 mt-4">
+                <div id="errorBox" class="alert alert-danger w-100" role="alert" style="display:none">Error</div>
+                <div id="successBox" class="alert alert-success w-100" role="alert" style="display:none">Error</div>
+            </div>
+            <div id="profileAlerts" class="col-md-10 col-12 mt-4">
+                <div id="errorBox" class="alert alert-danger w-100" role="alert" style="display:none">Error</div>
+                <div id="successBox" class="alert alert-success w-100" role="alert" style="display:none">Error</div>
+            </div>
+            <div class="col-md-10 col-12 ">
+                <div class="card mb-3">
+                    <h5 class="card-header">Manage Tutor Roles</h5>
+                    <div class="card-body row">
+                        <div class="input-group">
+                                <span class="input-group-text">Tutor's email</span>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" aria-describedby="submit">
+                                <button type="button" id="submit-email" class="btn btn-primary">Search for Tutor</button>
+                            </div>
+                        </form>
+                        <div id="roles-editor" style="display: none">
+                            <form id="profile" class="card-body row mb-0">
+                                <h5 class="mb-2" id="tutor-header"></h6>
+                                
+                                <div class="form-group col-md-3 col-6">
+                                    <input type="checkbox" class="btn-check" id="is-tutor" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="is-tutor">Tutor</label><br>
+                                </div>
+                                <div class="form-group col-md-3 col-6">
+                                    <input type="checkbox" class="btn-check" id="is-board" autocomplete="off">
+                                    <label class="btn btn-outline-secondary" for="is-board">Board</label><br>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <input id="submit-roles" type="button" class="btn btn-primary" value="Save Changes">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/managetutor.js"></script>
+    </body>
+</html>

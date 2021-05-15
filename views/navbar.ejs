@@ -50,8 +50,7 @@
                                 <li><a class="dropdown-item" href="/profile">My Profile</a></li>
                                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
                                     <li><a class="dropdown-item" href="/board/addtutor" >Add Tutor</a></li>
-                                    <li><a class="dropdown-item" href="/board/removetutor" >Remove Tutor</a></li>
-                                    <li><a class="dropdown-item" href="/board/addboard" >Add Board</a></li>
+                                    <li><a class="dropdown-item" href="/board/managetutor" >Manage Tutor</a></li>
                                 <% } %>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
