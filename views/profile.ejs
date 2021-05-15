@@ -11,7 +11,10 @@
             </div>
             <div class="col-md-10 col-12">
                 <nav class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
-                    <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%= `${String(profile._id) == String(user._id) ? "My" : `${profile.name.first} ${profile.name.last}'s`} Profile`%></h4>
+                    <div>
+                        <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%= `${String(profile._id) == String(user._id) ? "My" : `${profile.name.first} ${profile.name.last}'s`} Profile`%></h4>
+                        <p class="font-weight-light mb-0 px-2"><small>id: <%= String(profile._id) %></small></p>
+                    </div>
                 </nav>
                 <div class="card h-100">
                     <form id="profile" class="card-body row mb-0">
@@ -37,7 +40,8 @@
                             <input type="reset" class="btn btn-secondary" value="Reset">
                         </div>
                     </form>
-                    <% if (profile.roles.includes("tutee")) { %>
+                    
+                    <% if (profile.roles.includes("tutee")) { %> <!-- TUTEE ONLY STUFF -->
                     <div id="deleteParent" class="card-body row mb-0">
                         <h6 class="mb-1">Parents</h6>
                         <% for (let parent of parents) { %>
@@ -72,7 +76,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                    </div>
                     <form id="addParent" class="card-body row mb-0">
                         <h6 class="mb-1">Add Parent</h6>
                         <div class="row gx-1 px-3">
@@ -84,6 +88,25 @@
                             </div>
                         </div>
                     </form>
+                    <% } %>
+                    <!-- PARENT ONLY STUFF -->
+                    <% if (profile.roles.includes("parent")) { %> <!-- TUTEE ONLY STUFF -->
+                        <div id="deleteParent" class="card-body row mb-0">
+                            <h6 class="mb-1">Children</h6>
+                            <% for (let child of children) { %>
+                            <div class="row gx-1 px-3">
+                                <div class="form-group col-md-3 col-6">
+                                    <input class="form-control" type="text" placeholder="First Name" disabled value="<%= child.name.first %>">
+                                </div>
+                                <div class="form-group col-md-3 col-6">
+                                    <input class="form-control" type="text" placeholder="Last Name" disabled value="<%= child.name.last %>">
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <input class="form-control" type="email" placeholder="Email" disabled value="<%= child.email %>">
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
                     <% } %>
                 </div>
             </div>
