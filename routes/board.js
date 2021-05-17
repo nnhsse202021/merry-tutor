@@ -57,7 +57,7 @@ router.post("/addtutor", async (req, res) => {
     res.status(201);
 });
 
-router.get("/removetutor", async (req,res) => {
+router.get("/managetutor", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
@@ -66,21 +66,10 @@ router.get("/removetutor", async (req,res) => {
         return;
     }
 
-    res.render("removetutor", {user: req.user});
+    res.render("managetutor", {user: req.user});
 });
 
-router.post("/removetutor", async (req, res) => {
-    let formData = req.body;
-    let result = await usersCollection.findOneAndUpdate({email: formData["tutor-email"]}, {$pull: {roles: { $in: [ "tutor", "board" ] }}});
-    if (result.value != null){
-        console.log("tutor and board role successfully removed from tutor with email " + formData["tutor-email"] + ".");
-    } else{
-        console.log("Tutor with email " + formData["tutor-email"] + "not found.");
-    }
-    res.render("removetutor", { user: req.user, formData: formData});
-});
-
-router.get("/addboard", async (req,res) => {
+router.post("/managetutor", async (req, res) => {
     if (!req.user) { //must be logged in to see a tutee's data
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
@@ -88,21 +77,44 @@ router.get("/addboard", async (req,res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
-
-    res.render("addboard", {user: req.user});
 });
-
-router.post("/addboard", async (req, res) => {
-    let formData = req.body;
-    let result = await usersCollection.findOneAndUpdate({email: formData["email"]}, {$push: {roles: "board"}});
-    if (result.value != null){
-        console.log("board role successfully added to tutor with email " + formData["email"] + ".");
-    } else{
-        console.log("Tutor with email " + formData["email"] + "not found.");
+router.post("/managetutor/findtutor", async (req, res) => {
+    if (!req.user) { //must be logged in
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
+        return;
+    } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
     }
-    res.render("addboard", { user: req.user, formData: formData });
-});
+    if(req.user.email == req.body.email){ //cannnot change own roles
+        res.json({querySuccess: false, errorType: 1});
+    } else{
+        let user = await usersCollection.findOne({"email": req.body["email"]})
+        if(user){
+            res.json({querySuccess: true, errorType: null, user: user});
+        } else {
+            res.json({querySuccess: false, errorType: 2});
+        }
+        
+    }
+})
 
+router.post("/managetutor/edittutor", async (req, res) => {
+    if (!req.user) { //must be logged in
+        res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
+        return;
+    } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
+        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        return;
+    }
+    //prevent adding of existing roles
+    if((await usersCollection.updateOne({_id: ObjectID(req.body._id)}, {$set: {roles: req.body.roles}})).modifiedCount != 0){
+        res.json(true);
+    } else {
+        res.json(false);
+    }
+    
+})
 /**
  * Return + update a user if match in database otherwise make a new user, add it to the database and return it
 Matching priority:
