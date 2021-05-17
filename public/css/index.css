@@ -1,0 +1,14 @@
+.bg-mt-gold {
+    background: var(--mt-orange-white);
+}
+
+.bg-mt-gold h1, h2, h3 {
+    color: var(--mt-red);
+}
+
+.bg-mt-gold a {
+    color: var(--mt-light-gold)
+}
+p {
+    color: var(--mt-gray);
+}

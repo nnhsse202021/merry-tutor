@@ -51,6 +51,10 @@ router.post("/new", async (req, res) => {
     let tutorDoc = await find_user(formData["tutor-name"]);
     let tuteeDoc = await find_user(formData["tutee-name"]);
     let shadowDoc = await find_user(formData["shadow-name"]);
+    if (!tutorDoc || !tuteeDoc){
+        res.render("sessionsummary", { user: req.user, formData: formData });
+        return
+    }
     let formObj = {
         date: Date.parse(formData["session-date"]),
         tutor: {
@@ -88,9 +92,11 @@ router.post("/new", async (req, res) => {
         summaryCollection.insertOne(formObj);
         console.log("form submitted");
         res.redirect("../");
+        return
     } else { // invalid form 
         // if invalid, alert user, keep form data
         res.render("sessionsummary", { user: req.user, formData: formData });
+        return
     }
 });
 

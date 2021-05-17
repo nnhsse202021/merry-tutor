@@ -33,7 +33,15 @@ router.get("/:_id?", async (req,res) => {
         parent.name.first = parent.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" "); //make names pretty
         parent.name.last = parent.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
     }
-    res.render("profile", {user: req.user, profile, parents});
+
+    let children = await usersCollection.find({_id: {$in: profile.children.map(x=>ObjectID(x))}}).toArray();
+
+    for (let child of children) {
+        child.name.first = child.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" "); //make names pretty
+        child.name.last = child.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
+    }
+
+    res.render("profile", {user: req.user, profile, parents, children});
 })
 
 /* profile information update */

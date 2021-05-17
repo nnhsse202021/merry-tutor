@@ -1,4 +1,4 @@
-#tutee-search {
+#tutee-auto {
     position: relative;
 }
 #tutee-search-container {
@@ -9,13 +9,11 @@
     width: 180px;
 }
 
-/*when hovering an item:*/
-.autocomplete-items div:hover {
-background-color: #b46673; 
-}
 
-/*when navigating through the items using the arrow keys:*/
-.autocomplete-active {
-background-color: rgb(255, 255, 255); 
-color: #7e2e3c; 
+/*when hovering an item:*/
+.autocomplete-items div {
+    cursor: pointer; 
+}
+.autocomplete-items div:hover,.autocomplete-active  {
+    background: #d1d1d1
 }
