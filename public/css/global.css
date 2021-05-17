@@ -1,10 +1,12 @@
 :root {
     --mt-red: #641415;
+    --mt-red-bg: rgb(136,5,5);
     --mt-gray: #212529;
     --mt-black: #000;
     --mt-white: #fff;
     --mt-orange-white: #fcf4ec;
-    --mt-gold: #93701f
+    --mt-gold: #93701f;
+    --mt-light-gold: rgb(221,169,46)
 }
 
 body {

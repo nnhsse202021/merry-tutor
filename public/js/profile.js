@@ -40,6 +40,10 @@ document.querySelector("#removeParent").addEventListener("click", async () => {
     }
 })
 
+document.querySelector("#addParent").addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.querySelector("#addParentBtn").click()    
+})
 document.querySelector("#addParentBtn").addEventListener("click", async () => {
     let res = await fetch(window.location.pathname + "/addParent", { //send data to server
         method: "POST",

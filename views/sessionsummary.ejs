@@ -4,104 +4,98 @@
     </head>
     <body>
         <%- include("navbar.ejs") %>
-        <h1>Merry Tutor Session Summary</h1>
-        <form method="POST">
-            <div class="mb-3">
-                <label class="form-label" for="session-date">Session Date</label>
-                <input class="form-control" type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="tutor-name">Tutor Name</label>
-                <input class="form-control" type="text" id ="tutor-name" name="tutor-name"  placeholder="Last, First" aria-describedby="tutor-name-help" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
-                <small id="tutor-name-help" class="form-text text-muted">YOU are the tutor. Please put your full name.</small>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="tutee-name">Tutee Name</label>
-                <div id="tutee-search-container" class="autocomplete w-100">
-                    <input class="form-control tutee-auto" autocomplete="off" name-format="last,first" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+        <div id="sessionContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px">
+            <div class="col-md-10 col-12 mb-4">
+                <div class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
+                    <h4>Merry Tutor Session Summary</h4>
                 </div>
-                <small id="tutee-name-help" class="form-text text-muted">The person you tutored is the tutee. Please put their full name below.</small>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="shadow-name">Shadowing Tutor</label>
-                <input class="form-control" type="text" id="shadow-name" name="shadow-name" placeholder="Last, First" aria-describedby="shadow-name-help" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>">
-                <small id="shadow-name-help" class="form-text text-muted">If there was a new tutor shadowing your session, please show them how to fill out this session summary form and put their full name.</small>
-            </div>
-            <label class="form-label" for="tutee-grade">Tutee Grade</label>
-            <select class="form-select" id="tutee-grade" name="tutee-grade" required>
-                <option selected>No grade selected</option>
-                <option value="K">K</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select><br>
-            <% if (typeof formData != 'undefined') {%>
-                <script>
-                    document.querySelector("#tutee-grade").value = <%= formData['tutee-grade'] %> || document.querySelector("#tutee-grade").value
-                </script>
-            <% } %>
-                
-            <div class="mb-3">
-                <label>Subject(s) Tutored</label><br>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="subject" id="subject1" value="math">
-                    <label class="form-check-label" for="subject1">Math</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="subject" id="subject2" value="science">
-                    <label class="form-check-label" for="subject2" >Science</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="subject" id="subject3" value="social-studies">
-                    <label class="form-check-label" for="subject3">Social Studies</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="subject" id="subject4" value="english" >
-                    <label class="form-check-label" for="subject4">English</label>
-                </div>
-                <% if (typeof formData != 'undefined') {%>
-                    <script>
-                        document.querySelector("#subject").value = <%= formData['subject'] %> || document.querySelector("#subject").value
-                    </script>
-                <% } %>
-            </div>
-            <!-- <input type="checkbox" name="subject5" id="subject5" value="Other"> use if needed-->
-            
-            <div class="mb-5 range-wrap">
-                <label for="session-duration">How long was the session? (closest possible option)</label>
-                <p id="session-duration-help" class="form-text text-muted">If the session is an hour or longer, make sure you and the tutee take a break!</p>
-                <input type="range" name="session-duration" id="session-duration" class="form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
-                <output class="bubble"></output>
-                <%- include("rangebubble.ejs") %>
-            </div>
+                <div id="formContainer" class="card">
+                    <div class="card-body row">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label class="form-label" for="session-date">Session Date</label>
+                                <input class="form-control" type="date" name="session-date" id="session-date" value="<%= typeof formData != 'undefined' ? formData['session-date'] : '' %>" value="" required>
+                                <script>
+                                    document.getElementById("session-date").valueAsDate = new Date();
+                                </script>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="tutor-name">Tutor Name</label>
+                                <input class="form-control" type="text" id ="tutor-name" name="tutor-name" style="text-transform: capitalize" placeholder="Last, First" aria-describedby="tutor-name-help" value="<%= typeof formData != 'undefined' ? formData['tutor-name'] : '' %>" required>
+                                <small id="tutor-name-help" class="form-text text-muted">YOU are the tutor. Please put your full name.</small>
+                                <script>
+                                    document.getElementById("tutor-name").value = "<%=user.name.last%>, <%=user.name.first%>"
+                                </script>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="tutee-name">Tutee Name</label>
+                                <input class="form-control tutee-auto" autocomplete="off" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+                                <small id="tutee-name-help" class="form-text text-muted">The person you tutored is the tutee. Please put their full name below.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="shadow-name">Shadowing Tutor</label>
+                                <input class="form-control" type="text" id="shadow-name" name="shadow-name" placeholder="Last, First" aria-describedby="shadow-name-help" value="<%= typeof formData != 'undefined' ? formData['shadow-name'] : '' %>">
+                                <small id="shadow-name-help" class="form-text text-muted">If there was a new tutor shadowing your session, please show them how to fill out this session summary form and put their full name.</small>
+                            </div>
+                                
+                            <div class="mb-3" id="subjects">
+                                <label>Subject(s) Tutored</label><br>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="subject1" value="math">
+                                    <label class="form-check-label" for="subject1">Math</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="subject2" value="science">
+                                    <label class="form-check-label" for="subject2" >Science</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="subject3" value="social-studies">
+                                    <label class="form-check-label" for="subject3">Social Studies</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="subject4" value="english" >
+                                    <label class="form-check-label" for="subject4">English</label>
+                                </div>
+                                <% if (typeof formData != 'undefined') {%>
+                                    <script>
+                                        for (checkbox of document.getElementsByName("subject")){
+                                            checkbox.checked = "<%=formData.subject%>".split(",").includes(checkbox.value)
+                                        }
+                                    </script>
+                                <% } %>
+                            </div>
+                            <!-- <input type="checkbox" name="subject5" id="subject5" value="Other"> use if needed-->
+                            
+                            <div class="mb-5 range-wrap">
+                                <label for="session-duration">How long was the session? (closest possible option)</label>
+                                <p id="session-duration-help" class="form-text text-muted">If the session is an hour or longer, make sure you and the tutee take a break!</p>
+                                <input type="range" name="session-duration" id="session-duration" class="form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
+                                <output class="bubble"></output>
+                                <%- include("rangebubble.ejs") %>
+                            </div>
 
-            <div class="mb-3">
-                <label class="form-label" style="margin: 0 0 0" for="what-they-learned" >What did the tutee learn during the session?</label><br>
-                <p id="what-they-learned-help" class="form-text text-muted">Answer with at least 2-3 sentences, clearly describing specifics of the tutoring session.</p>
-                <textarea class="form-control" type="text" name="what-they-learned" id="what-they-learned" rows="3"  required><%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %></textarea>
+                            <div class="mb-3">
+                                <label class="form-label" style="margin: 0 0 0" for="what-they-learned" >What did the tutee learn during the session?</label><br>
+                                <p id="what-they-learned-help" class="form-text text-muted">Answer with at least 2-3 sentences, clearly describing specifics of the tutoring session.</p>
+                                <textarea class="form-control" type="text" name="what-they-learned" id="what-they-learned" rows="3"  required><%= typeof formData != 'undefined' ? formData['what-they-learned'] : '' %></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" style="margin: 0 0 0" for="at-home-suggestion">What are some suggested steps until the next tutoring session? Any suggested homework?</label><br>
+                                <p id="at-home-suggestion-help" class="form-text text-muted">General encouragement is acceptable as well.</p>
+                                <textarea class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" rows="3" aria-describedby="at-home-suggestion-help" required><%= typeof formData != 'undefined' ? formData['at-home-suggestion'] : '' %></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" style="margin: 0 0 0" for="next-session-suggestion">What should the tutee work on during the next session?</label><br>
+                                <p id="next-session-suggestion-help" class="form-text text-muted">What concepts should the next tutor work on at the next session? If not applicable, put "N/A".</p>
+                                <textarea class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" rows="3" aria-describedby="next-session-suggestion-help" required><%= typeof formData != 'undefined' ? formData['next-session-suggestion'] : '' %></textarea>
+                            </div>
+                            
+                            <input class="btn btn-primary" type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label" style="margin: 0 0 0" for="at-home-suggestion">What are some suggested steps until the next tutoring session? Any suggested homework?</label><br>
-                <p id="at-home-suggestion-help" class="form-text text-muted">General encouragement is acceptable as well.</p>
-                <textarea class="form-control" type="text" name="at-home-suggestion" id="at-home-suggestion" rows="3" aria-describedby="at-home-suggestion-help" required><%= typeof formData != 'undefined' ? formData['at-home-suggestion'] : '' %></textarea>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" style="margin: 0 0 0" for="next-session-suggestion">What should the tutee work on during the next session?</label><br>
-                <p id="next-session-suggestion-help" class="form-text text-muted">What concepts should the next tutor work on at the next session? If not applicable, put "N/A".</p>
-                <textarea class="form-control" type="text" name="next-session-suggestion" id="next-session-suggestion" rows="3" aria-describedby="next-session-suggestion-help" required><%= typeof formData != 'undefined' ? formData['next-session-suggestion'] : '' %></textarea>
-            </div>
-            
-            <input type="submit" value="Submit">
-        </form>
         <script src="/js/autocomplete.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     </body>
 </html>
