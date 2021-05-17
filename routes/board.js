@@ -77,19 +77,6 @@ router.post("/managetutor", async (req, res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
-    //data is getting sent into url
-    //want to search db for email and update page if doc is found
-    console.log(req.body);
-    
-    // let result = await usersCollection.findOneAndUpdate({email: formData["email"]}, {$push: {roles: "tutor" }});
-    /*
-    if (result.value != null){
-        console.log("tutor and board role successfully removed from tutor with email " + formData["tutor-email"] + ".");
-    } else{
-        console.log("Tutor with email " + formData["tutor-email"] + " not found.");
-    }
-    res.render("managetutor", { user: req.user, formData: formData});
-    */
 });
 router.post("/managetutor/findtutor", async (req, res) => {
     if (!req.user) { //must be logged in
@@ -99,8 +86,17 @@ router.post("/managetutor/findtutor", async (req, res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
-    let user = await usersCollection.findOne({"email": req.body["email"]})
-    res.json(user);
+    if(req.user.email == req.body.email){ //cannnot change own roles
+        res.json({querySuccess: false, errorType: 1});
+    } else{
+        let user = await usersCollection.findOne({"email": req.body["email"]})
+        if(user){
+            res.json({querySuccess: true, errorType: null, user: user});
+        } else {
+            res.json({querySuccess: false, errorType: 2});
+        }
+        
+    }
 })
 
 router.post("/managetutor/edittutor", async (req, res) => {
@@ -111,8 +107,13 @@ router.post("/managetutor/edittutor", async (req, res) => {
         res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
         return;
     }
-    await usersCollection.updateOne({_id: ObjectID(req.body._id)}, {$set: {roles: req.body.roles}});
-    res.json(true);
+    //prevent adding of existing roles
+    if((await usersCollection.updateOne({_id: ObjectID(req.body._id)}, {$set: {roles: req.body.roles}})).modifiedCount != 0){
+        res.json(true);
+    } else {
+        res.json(false);
+    }
+    
 })
 /**
  * Return + update a user if match in database otherwise make a new user, add it to the database and return it
