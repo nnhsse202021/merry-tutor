@@ -29,7 +29,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="tutee-name">Tutee Name</label>
-                                <input class="form-control tutee-auto" autocomplete="off" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
+                                <input class="form-control tutee-auto" name-format="last,first" autocomplete="off" type="text" id ="tutee-name" name="tutee-name" placeholder="Last, First" aria-describedby="tutee-name-help" value="<%= typeof formData != 'undefined' ? formData['tutee-name'] : '' %>"  required>
                                 <small id="tutee-name-help" class="form-text text-muted">The person you tutored is the tutee. Please put their full name below.</small>
                             </div>
                             <div class="mb-3">
