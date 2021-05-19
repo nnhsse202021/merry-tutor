@@ -35,6 +35,11 @@ router.get("/",async (req,res) => {
     }
     let results = (await usersCollection.aggregate([
         {
+          '$match': {
+            roles: "tutee"
+          }
+        },
+        {
           '$addFields': {
             'fullname': {
               '$concat': nameConcats[req.query.type]
