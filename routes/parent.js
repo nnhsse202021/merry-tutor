@@ -29,7 +29,7 @@ router.get("/mytuteesummaries", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("parent")) && req.user._id != req.params._id) { //if you are a parent of the id you are fine, otherwise your id must match this tutee
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 

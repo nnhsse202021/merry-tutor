@@ -20,7 +20,7 @@ router.get("/:_id?", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board")) && req.params._id && req.user._id != req.params._id) { //if you are not board, you requested a specific id, and that id isnt you, err
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -50,7 +50,7 @@ router.post("/:_id?/update", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board")) && req.params._id && req.user._id != req.params._id) { //if you are not board, you requested a specific id, and that id isnt you, err
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     //use the information in req.body to update the document
@@ -73,7 +73,7 @@ router.post("/:_id?/removeParent", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board")) && req.params._id && req.user._id != req.params._id) { //if you are not board, you requested a specific id, and that id isnt you, err
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     if ((await usersCollection.updateOne({_id: new ObjectID(req.body._id)}, //remove the child's id from the parent's children array
@@ -92,7 +92,7 @@ router.post("/:_id?/addParent", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board")) && req.params._id && req.user._id != req.params._id) { //if you are not board, you requested a specific id, and that id isnt you, err
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     if ((await usersCollection.updateOne({email: req.body.email, roles: "parent"}, //find the parent by email and add the child's id to their children array
