@@ -53,7 +53,7 @@ router.get("/addtutor", async (req,res) => {
 router.post("/addtutor", async (req, res) => {
     let formData = req.body;
     await getOrMakeTutor(null, formData["tutor-email"].toLowerCase(), null, null, null);
-    res.render("addtutor", { user: req.user, formData: formData });
+    res.render("addtutor", { user: req.user});
     res.status(201);
 });
 
@@ -111,6 +111,7 @@ Matching priority:
 3. name (first and last)
  */
 async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_year) {
+    // let isNew = false;
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
@@ -128,6 +129,7 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
             grad_year: grad_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
+        // isNew = true;
     } else {
         Object.assign(user, { //update the user if we got any new information (this could probably be done a better way)
             name: {
@@ -140,7 +142,7 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
         user.roles.push("tutor");
         await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
-    return user; //return the user (either newly made or updated)
+    return user //return the user (either newly made or updated) // {user: user, isNew: isNew}; // return the user (either newly made or updated) and if user was new
 }
 
 module.exports = router;
