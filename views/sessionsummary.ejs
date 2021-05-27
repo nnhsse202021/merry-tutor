@@ -66,12 +66,24 @@
                             </div>
                             <!-- <input type="checkbox" name="subject5" id="subject5" value="Other"> use if needed-->
                             
-                            <div class="mb-5 range-wrap">
+                            <div class="mb-5">
                                 <label for="session-duration">How long was the session? (closest possible option)</label>
                                 <p id="session-duration-help" class="form-text text-muted">If the session is an hour or longer, make sure you and the tutee take a break!</p>
-                                <input type="range" name="session-duration" id="session-duration" class="form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
-                                <output class="bubble"></output>
-                                <%- include("rangebubble.ejs") %>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="range" name="session-duration" id="session-duration" class="form-control form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <span class="form-control badge bg-secondary" id="time-badge"></span>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.querySelector("#time-badge").innerHTML = `${document.querySelector("#session-duration").value} hr(s)`
+                                    document.querySelector("#session-duration").addEventListener('input', updateBadge)
+                                    function updateBadge(){
+                                        document.querySelector("#time-badge").innerHTML = `${document.querySelector("#session-duration").value} hr(s)`
+                                    }
+                                </script>
                             </div>
 
                             <div class="mb-3">
