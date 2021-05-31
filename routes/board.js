@@ -29,7 +29,7 @@ router.get("/allsummaries", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -43,7 +43,7 @@ router.get("/addtutor", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -62,7 +62,7 @@ router.get("/managetutor", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -74,7 +74,7 @@ router.post("/managetutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 });
@@ -83,7 +83,7 @@ router.post("/managetutor/findtutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     if(req.user.email == req.body.email){ //cannnot change own roles
@@ -104,7 +104,7 @@ router.post("/managetutor/edittutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     //prevent adding of existing roles

@@ -30,7 +30,7 @@ router.get("/", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to preform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
