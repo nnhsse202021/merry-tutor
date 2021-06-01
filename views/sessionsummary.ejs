@@ -40,22 +40,36 @@
                                 
                             <div class="mb-3" id="subjects">
                                 <label>Subject(s) Tutored</label><br>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject1" value="math">
                                     <label class="form-check-label" for="subject1">Math</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject2" value="science">
                                     <label class="form-check-label" for="subject2" >Science</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject3" value="social-studies">
                                     <label class="form-check-label" for="subject3">Social Studies</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject4" value="english" >
                                     <label class="form-check-label" for="subject4">English</label>
                                 </div>
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="other-subject-check" >
+                                    <input id="other-subject-text" type="text" placeholder="Other" class="form-control-sm">
+                                </div>
+                                <script>
+                                    document.querySelector("#other-subject-text").addEventListener("input", function() {
+                                        document.querySelector("#other-subject-check").value = document.querySelector("#other-subject-text").value;
+                                         if(document.querySelector("#other-subject-text").value != ""){
+                                            document.querySelector("#other-subject-check").checked = true;
+                                         } else{
+                                            document.querySelector("#other-subject-check").checked = false;
+                                         }
+                                    });
+                                </script>
                                 <% if (typeof formData != 'undefined') {%>
                                     <script>
                                         for (checkbox of document.getElementsByName("subject")){
