@@ -19,16 +19,17 @@ function autocomplete(inp, arr) {
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
         let arr = await (await fetch(`/autocomplete?type=${inp.getAttribute("name-format") || "default"}&input=${val}`)).json();
-        console.log(arr)
+        // console.log(arr)
         for (i = 0; i < arr.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
             let option = arr[i]
             /*create a DIV element for each matching element:*/
             b = document.createElement("DIV");
             b.classList.add("list-group-item")
+            b.innerHTML = option[0];
             /*make the matching letters bold:*/
-            b.innerHTML = "<strong>" + option[0].substr(0, val.length) + "</strong>";
-            b.innerHTML += option[0].substr(val.length);
+            // b.innerHTML = "<strong>" + option[0].substr(0, val.length) + "</strong>";
+            // b.innerHTML += option[0].substr(val.length);
             /*insert a input field that will hold the current array item's value:*/
             b.innerHTML += "<input type='hidden' value='" + option[0] + "'>";
             /*execute a function when someone clicks on the item value (DIV element):*/

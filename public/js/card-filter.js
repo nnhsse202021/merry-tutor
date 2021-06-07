@@ -7,7 +7,7 @@ for (let card of document.querySelectorAll("#sessionSummaryCards .card")) {
 document.querySelector("#filterSubject").addEventListener("input", () => {
     let value = document.querySelector("#filterSubject").value.toLowerCase();
     for (let card of document.querySelectorAll("#sessionSummaryCards .card")) {
-        if (card.subjectsArr.some((x) => x.startsWith(value))) {
+        if (card.subjectsArr.some((x) => x.toLowerCase().startsWith(value))) {
             card.hiddenSubjectFilter = false;
         } else {
             card.hiddenSubjectFilter = true;

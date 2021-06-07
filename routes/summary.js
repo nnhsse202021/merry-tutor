@@ -38,7 +38,7 @@ router.get("/new", (req, res) => {
         res.status(401).render("error", { code: 401, description: "You must be logged in to perform this action." });
         return;
     } else if (!(req.user.roles.includes("tutor"))) { //if you are not a tutor, you cannot access this data
-        res.status(403).render("error", { code: 403, description: "Unauthoried for logged in user." });
+        res.status(403).render("error", { code: 403, description: "Unauthorized for logged in user." });
         return;
     }
 

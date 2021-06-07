@@ -16,7 +16,7 @@ Ex. -
 <b>Data stored in</b>
 - [MongoDB](https://www.mongodb.com/)
 
-<b>Frontend build using</b>
+<b>Frontend built using</b>
 - [ejs](https://ejs.co/)
 - CSS + JavaScript
 

@@ -4,13 +4,13 @@
     </head>
     <body>
         <%- include("navbar.ejs") %>
-        <div class="jumbotron w-75 mx-auto my-5 text-center">
-            <h1 class="display-1 text-danger text-center"><%= `Error ${code}` %></h1>
+        <div class="jumbotron w-75 mx-auto my-5 text-left">
+            <h1 class="display-1 text-danger"><%= description %></h1>
             <hr class="my-4">
-            <p class="lead"><%= description %></p>
+            <p class="lead"><%= `Error ${code}` %></p>
             <br>
             <% if (code == 401) { %>
-                <a class="btn btn-lg btn-dark" href="/login" role="button">Log in or Sign Up</a>
+                <a class="btn btn-lg btn-dark" href="/login" role="button">Sign Up or Log In</a>
             <% } %>
         </div>
         <%- include("footer.ejs") %>

@@ -29,7 +29,7 @@ router.get("/allsummaries", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -43,7 +43,7 @@ router.get("/addtutor", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -52,8 +52,8 @@ router.get("/addtutor", async (req,res) => {
 
 router.post("/addtutor", async (req, res) => {
     let formData = req.body;
-    await getOrMakeTutor(null, formData["new-tutor-email"].toLowerCase(), formData["new-tutor-first-name"].toLowerCase(), formData["new-tutor-last-name"].toLowerCase(), formData["new-tutor-graduation-year"]);
-    res.render("addtutor", { user: req.user, formData: formData });
+    await getOrMakeTutor(null, formData["tutor-email"].toLowerCase(), null, null, null);
+    res.render("addtutor", { user: req.user});
     res.status(201);
 });
 
@@ -62,7 +62,7 @@ router.get("/managetutor", async (req,res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 
@@ -74,7 +74,7 @@ router.post("/managetutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
 });
@@ -83,7 +83,7 @@ router.post("/managetutor/findtutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     if(req.user.email == req.body.email){ //cannnot change own roles
@@ -104,7 +104,7 @@ router.post("/managetutor/edittutor", async (req, res) => {
         res.status(401).render("error", {code: 401, description: "You must be logged in to perform this action."});
         return;
     } else if (!(req.user.roles.includes("board"))) { //if you are not a board member, you cannot access this data
-        res.status(403).render("error", {code: 403, description: "Unauthoried for logged in user."});
+        res.status(403).render("error", {code: 403, description: "Unauthorized for logged in user."});
         return;
     }
     //prevent adding of existing roles
@@ -123,6 +123,7 @@ Matching priority:
 3. name (first and last)
  */
 async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_year) {
+    // let isNew = false;
     if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
     if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
     if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
@@ -140,6 +141,7 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
             grad_year: grad_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
+        // isNew = true;
     } else {
         Object.assign(user, { //update the user if we got any new information (this could probably be done a better way)
             name: {
@@ -152,7 +154,7 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
         user.roles.push("tutor");
         await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
-    return user; //return the user (either newly made or updated)
+    return user //return the user (either newly made or updated) // {user: user, isNew: isNew}; // return the user (either newly made or updated) and if user was new
 }
 
 module.exports = router;

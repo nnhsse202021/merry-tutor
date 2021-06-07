@@ -28,7 +28,7 @@ document.querySelector("#submit-email").addEventListener("click", async () => {
                 document.querySelector("#manage-error-box").innerHTML = "Oops! Cannot change roles for yourself.";
                 break;
             case 2:
-                document.querySelector("#manage-error-box").innerHTML = `Could not find user with submitted email`;
+                document.querySelector("#manage-error-box").innerHTML = "Could not find user with submitted email.";
                 break;
         }
         document.querySelector("#manage-success-box").style.display = "none";

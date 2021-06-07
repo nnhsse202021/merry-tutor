@@ -40,7 +40,7 @@
                 <% } %>
                 <div class="mx-2">
                     <% if (typeof user != "object") {%>
-                        <a class="btn btn-outline-light" href="/login">Login/Sign Up</a>
+                        <a class="btn btn-outline-light" href="/login">Sign Up/Login</a>
                     <% } else {%>
                         <div class="dropdown">
                             <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,7 +51,8 @@
                                 <% if (typeof user == "object" && user.roles.includes("board")) {%>
                                     <li><a class="dropdown-item" href="/board/addtutor" >Add Tutor</a></li>
                                     <li><a class="dropdown-item" href="/board/managetutor" >Manage Tutor</a></li>
-                                    <li><a class="dropdown-item" href="/export">Download Data</a></li>
+                                    <li><a class="dropdown-item" href="/export/sessiondata">Download Session Data</a></li>
+                                    <li><a class="dropdown-item" href="/export/userdata">Download User Data</a></li>
                                 <% } %>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>

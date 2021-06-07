@@ -40,22 +40,36 @@
                                 
                             <div class="mb-3" id="subjects">
                                 <label>Subject(s) Tutored</label><br>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject1" value="math">
                                     <label class="form-check-label" for="subject1">Math</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject2" value="science">
                                     <label class="form-check-label" for="subject2" >Science</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject3" value="social-studies">
                                     <label class="form-check-label" for="subject3">Social Studies</label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-1">
                                     <input class="form-check-input" type="checkbox" name="subject" id="subject4" value="english" >
                                     <label class="form-check-label" for="subject4">English</label>
                                 </div>
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input" type="checkbox" name="subject" id="other-subject-check" >
+                                    <input id="other-subject-text" type="text" placeholder="Other" class="form-control-sm">
+                                </div>
+                                <script>
+                                    document.querySelector("#other-subject-text").addEventListener("input", function() {
+                                        document.querySelector("#other-subject-check").value = document.querySelector("#other-subject-text").value;
+                                         if(document.querySelector("#other-subject-text").value != ""){
+                                            document.querySelector("#other-subject-check").checked = true;
+                                         } else{
+                                            document.querySelector("#other-subject-check").checked = false;
+                                         }
+                                    });
+                                </script>
                                 <% if (typeof formData != 'undefined') {%>
                                     <script>
                                         for (checkbox of document.getElementsByName("subject")){
@@ -66,12 +80,24 @@
                             </div>
                             <!-- <input type="checkbox" name="subject5" id="subject5" value="Other"> use if needed-->
                             
-                            <div class="mb-5 range-wrap">
+                            <div class="mb-5">
                                 <label for="session-duration">How long was the session? (closest possible option)</label>
                                 <p id="session-duration-help" class="form-text text-muted">If the session is an hour or longer, make sure you and the tutee take a break!</p>
-                                <input type="range" name="session-duration" id="session-duration" class="form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
-                                <output class="bubble"></output>
-                                <%- include("rangebubble.ejs") %>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="range" name="session-duration" id="session-duration" class="form-control form-range" min="0" max="3" step="0.25" value="<%= typeof formData != 'undefined' ? formData['session-duration'] : '0' %>" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <span class="form-control badge bg-secondary" id="time-badge"></span>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.querySelector("#time-badge").innerHTML = `${document.querySelector("#session-duration").value} hr(s)`
+                                    document.querySelector("#session-duration").addEventListener('input', updateBadge)
+                                    function updateBadge(){
+                                        document.querySelector("#time-badge").innerHTML = `${document.querySelector("#session-duration").value} hr(s)`
+                                    }
+                                </script>
                             </div>
 
                             <div class="mb-3">
