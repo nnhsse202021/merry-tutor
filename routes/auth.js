@@ -114,7 +114,11 @@ async function getOrMakeUser(google_sub, email, given_name, family_name, graduat
             graduation_year: graduation_year
         };
         await usersCollection.insertOne(user); // insert the user into the collection
+    } else {
+        user.google_sub = google_sub;
+        usersCollection.replaceOne({_id: user._id}, user);
     }
+    
     return user; //return the user (either newly made or updated)
 }
 
