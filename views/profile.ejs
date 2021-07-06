@@ -2,10 +2,10 @@
     <head>
         <%- include("head.ejs") %>
     </head>
-    <body>
+    <body class="d-flex flex-column h-100">
         <%- include("navbar.ejs") %>
         <div id="profileContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px;">
-            <div id="profileAlerts" class="col-md-10 col-12 mt-4">
+            <div id="profileAlerts" class="col-md-10 col-12">
                 <div id="errorBox" class="alert alert-danger w-100" role="alert" style="display:none">Error</div>
                 <div id="successBox" class="alert alert-success w-100" role="alert" style="display:none">Error</div>
             </div>
@@ -16,7 +16,7 @@
                         <p class="font-weight-light mb-0 px-2"><small>id: <%= String(profile._id) %></small></p>
                     </div>
                 </nav>
-                <div class="card h-100">
+                <div class="card">
                     <form id="profile" class="card-body row mb-0">
                         <h6 class="mb-1">Personal Details</h6>
                         <div class="form-group col-md-6 col-12">
@@ -90,8 +90,8 @@
                         </div>
                     </form>
                     <% } %>
-                    <!-- PARENT ONLY STUFF -->
-                    <% if (profile.roles.includes("parent")) { %> <!-- TUTEE ONLY STUFF -->
+                    
+                    <% if (profile.roles.includes("parent")) { %> <!-- PARENT ONLY STUFF -->
                         <div id="deleteParent" class="card-body row mb-0">
                             <h6 class="mb-1">Children</h6>
                             <% for (let child of children) { %>
