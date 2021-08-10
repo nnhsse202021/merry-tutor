@@ -66,8 +66,6 @@ router.get("/userdata", async (req,res) => {
     for (let user of docs) {
         let {firstName, lastName, email, gradYear, isTutor, isBoard, isTutee, isParent, childrenIDs} = user;
         typeof childrenIDs
-        console.log(childrenIDs);
-        // console.log(String(childrenIDs.map((id) => userMap[id].email)));
         rows.push([firstName, lastName, email, gradYear || "", isTutor, isBoard, isTutee, isParent, childrenIDs.length > 0 ? String(childrenIDs.map((id) => userMap[id].email)) : ""])
     }
     let csvText = rows.map(x=>x.join(",")).join("\n");
