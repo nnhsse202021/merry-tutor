@@ -36,7 +36,6 @@ router.get("/:_id", async (req,res) => {
 
     //only auth'd users are past this point
     let tutee = await usersCollection.findOne({_id: new ObjectID(req.params._id)});
-    console.log(tutee)
     tutee.name.first = tutee.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
     tutee.name.last = tutee.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
     let sessionData = await summariesCollection.find({"tutee.id": req.params._id}).sort({date: -1}).limit(100).toArray();
