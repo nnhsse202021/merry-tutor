@@ -2,33 +2,33 @@
     <head>
         <%- include("head.ejs") %>
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <%- include("navbar.ejs") %>
-        <div id="sessionContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px">
-            <div class="col-md-10 col-12 mb-4">
-                <nav class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
-                    <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1">Add a Tutor</h4>
-                </nav>
-                <div id="formContainer" class="card mb-2">
-                    <div class="card-body">
-                        <form method="POST">
-                            <div class="form-group mb-3">
-                                <label for="tutorEmail" class="form-label" >Tutor's email address</label>
-                                <input type="email" class="form-control" name="tutor-email" id="tutor-email" placeholder="name@example.com" required>
-                            </div>
-                            <button type="submit" id="submit" onclick="userConfirm()" class="btn btn-primary mb-3">Add Tutor</button>
-                            <script>
-                                function userConfirm(){
-                                    if(document.querySelector("#tutor-email").value != ""){
-                                        var r = confirm("Are you sure you want to add a new tutor with email \"" + document.querySelector("#tutor-email").value + "\"?");
+        <main class="mt-4">
+            <div id="sessionContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px">
+                <div class="col-md-10 col-12 mb-4">
+                    <div id="formContainer" class="card mb-3">
+                        <h5 class="card-header">Add a Tutor</h5>
+                        <div class="card-body">
+                            <form method="POST">
+                                <div class="form-group mb-3">
+                                    <label for="tutorEmail" class="form-label" >Tutor's email address</label>
+                                    <input type="email" class="form-control" name="tutor-email" id="tutor-email" placeholder="name@example.com" required>
+                                </div>
+                                <button type="submit" id="submit" onclick="userConfirm()" class="btn btn-primary mb-3">Add Tutor</button>
+                                <script>
+                                    function userConfirm(){
+                                        if(document.querySelector("#tutor-email").value != ""){
+                                            var r = confirm("Are you sure you want to add a new tutor with email \"" + document.querySelector("#tutor-email").value + "\"?");
+                                        }
                                     }
-                                }
-                            </script>
-                        </form>
+                                </script>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
         <%- include("footer.ejs") %>
     </body>
 </html>

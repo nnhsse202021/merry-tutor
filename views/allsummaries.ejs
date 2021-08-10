@@ -3,27 +3,29 @@
         <%- include("head.ejs") %>
         <link href="/css/card-display.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <%- include("navbar.ejs") %>
-        <div id="sessionSummaryContainer" class="row mx-auto w-80 justify-content-center">
-            <div class="col-md-10">
-                <nav class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
-                    <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%=`All Recent Session Summaries`%></h4>
-                    <div class="d-flex align-self-end justify-content-center mx-2" id="cardNavButtons">
-                        <input class="mx-1 form-control" style="max-width:143px" id="filterTutee" type="text" placeholder="Filter Tutee" aria-label="Filter Tutee">
-                        <input class="mx-1 form-control" style="max-width:143px" id="filterTutor" type="text" placeholder="Filter Tutor" aria-label="Filter Tutor">
-                        <input class="mx-1 form-control" style="max-width:143px" id="filterSubject" list="subjectOptions" placeholder="Filter Subject" aria-label="Filter Subject">
-                        <datalist id="subjectOptions">
-                            <option value="Math"></option>
-                            <option value="Science"></option>
-                            <option value="Social Studies"></option>
-                            <option value="English"></option>
-                        </datalist>
-                    </div>
-                </nav>
+        <main class="mt-4">
+            <div id="sessionSummaryContainer" class="row mx-auto w-80 justify-content-center" style="max-width: 1500px">
+                <div class="col-md-10">
+                    <nav class="navbar navbar-light bg-light border px-2 py-2 my-2 rounded-3 d-flex">
+                        <h4 class="navbar-brand text-wrap my-0 px-2 flex-grow-1" id="cardNavLabel"><%=`All Recent Session Summaries`%></h4>
+                        <div class="d-flex align-self-end justify-content-center mx-2" id="cardNavButtons">
+                            <input class="mx-1 form-control" style="max-width:143px" id="filterTutee" type="text" placeholder="Filter Tutee" aria-label="Filter Tutee">
+                            <input class="mx-1 form-control" style="max-width:143px" id="filterTutor" type="text" placeholder="Filter Tutor" aria-label="Filter Tutor">
+                            <input class="mx-1 form-control" style="max-width:143px" id="filterSubject" list="subjectOptions" placeholder="Filter Subject" aria-label="Filter Subject">
+                            <datalist id="subjectOptions">
+                                <option value="Math"></option>
+                                <option value="Science"></option>
+                                <option value="Social Studies"></option>
+                                <option value="English"></option>
+                            </datalist>
+                        </div>
+                    </nav>
+                </div>
+                <%- include("summarycard.ejs") %>
             </div>
-            <%- include("summarycard.ejs") %>
-        </div>
+        </main>
         <script src="/js/card-filter.js"></script>
         <%- include("footer.ejs") %>
     </body>
