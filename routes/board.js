@@ -1,28 +1,10 @@
 let express = require("express");
 
+const db = require("../db.js");
+const mongoose = require('mongoose')
+
 router = express.Router();
 
-const { MongoClient, ObjectID } = require('mongodb');
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let usersCollection;
-let summariesCollection;
-
-mongoClient.connect(err => {
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    summariesCollection = mongoClient.db("merry-tutor").collection("Summaries");
-})
 
 router.get("/allsummaries", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
@@ -34,7 +16,7 @@ router.get("/allsummaries", async (req,res) => {
     }
 
     //only auth'd users are past this point
-    let sessionData = await summariesCollection.find({}).sort({date: -1}).limit(100).toArray();
+    let sessionData = await (await db.getSessionModel()).find({}).sort({date: -1}).limit(100).exec();
     res.render("allsummaries", {user: req.user, summaries: sessionData});
 });
 
@@ -89,7 +71,7 @@ router.post("/managetutor/findtutor", async (req, res) => {
     if(req.user.email == req.body.email){ //cannnot change own roles
         res.json({querySuccess: false, errorType: 1});
     } else{
-        let user = await usersCollection.findOne({"email": req.body["email"]})
+        let user = await (await db.getUserModel()).findOne({"email": req.body["email"]})
         if(user){
             res.json({querySuccess: true, errorType: null, user: user});
         } else {
@@ -108,7 +90,7 @@ router.post("/managetutor/edittutor", async (req, res) => {
         return;
     }
     //prevent adding of existing roles
-    if((await usersCollection.updateOne({_id: ObjectID(req.body._id)}, {$set: {roles: req.body.roles}})).modifiedCount != 0){
+    if((await (await db.getUserModel()).updateOne({_id: mongoose.Types.ObjectId(req.body._id)}, {$set: {roles: req.body.roles}})).modifiedCount != 0){
         res.json(true);
     } else {
         res.json(false);
@@ -124,11 +106,11 @@ Matching priority:
  */
 async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_year) {
     // let isNew = false;
-    if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
-    if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
-    if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
+    if (google_sub) var user = await (await db.getUserModel()).findOne({google_sub: google_sub}); //see if a user exists with their google account
+    if (!user) user = await (await db.getUserModel()).findOne({email: email, google_sub: null}); //see if a user exists with their email
+    if (!user) user = await (await db.getUserModel()).findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
     if (!user) { //we are certain the user doesn't exist yet, let's make them from scratch
-        user = {
+        user = new (await db.getUserModel())({
             // _id generated when .insertOne is called with _id undefined
             name: {
                 first: given_name,
@@ -139,8 +121,8 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
             roles: ["tutor"],
             children: [],
             grad_year: grad_year
-        };
-        await usersCollection.insertOne(user); // insert the user into the collection
+        });
+        await user.save(); // insert the user into the collection
         // isNew = true;
     } else {
         Object.assign(user, { //update the user if we got any new information (this could probably be done a better way)
@@ -152,7 +134,7 @@ async function getOrMakeTutor(google_sub, email, given_name, family_name, grad_y
             google_sub: google_sub
         });
         user.roles.push("tutor");
-        await usersCollection.replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
+        await (await db.getUserModel()).replaceOne({_id: user._id}, user, {upsert: true}) // replace the user with the updated version
     }
     return user //return the user (either newly made or updated) // {user: user, isNew: isNew}; // return the user (either newly made or updated) and if user was new
 }

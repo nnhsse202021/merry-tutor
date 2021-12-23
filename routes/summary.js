@@ -1,37 +1,9 @@
 let express = require("express");
 
+const db = require("../db.js");
+
 router = express.Router();
 
-// import the MongoClient class and make a client with the url to our database
-const { MongoClient, ObjectID } = require('mongodb');
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// connect to the client and pass a reference to the Summaries collection to the global scope so we can use it later
-let summaryCollection;
-mongoClient.connect(err => {
-    if (err) console.log(err);
-    summaryCollection = mongoClient.db("merry-tutor").collection("Summaries");
-    console.log("Connected to Summaries collection");
-});
-
-// connect to the client and pass a reference to the Users collection to the global scope so we can use it later
-let usersCollection;
-mongoClient.connect(err => {
-    if (err) console.log(err);
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Connected to Users collection");
-});
 
 router.get("/new", (req, res) => {
     if (!req.user) { //must be logged in to see a tutee's data
@@ -89,7 +61,7 @@ router.post("/new", async (req, res) => {
         }
     }
     if (formObj.tutor.id && formObj.tutee.id) {    // validate for tutor_id and tutee_id
-        summaryCollection.insertOne(formObj);
+        (await db.getSessionModel()).insertOne(formObj);
         console.log("form submitted");
         res.redirect("../");
         return
@@ -103,7 +75,7 @@ router.post("/new", async (req, res) => {
 async function find_user(name) {
     let [last, first] = name.replace(", ", ",").split(",");
     // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
-    let userDoc = await usersCollection.findOne(
+    let userDoc = await (await db.getUserModel()).findOne(
         {
             name: {
                 first: (first ?? "").toLowerCase(),

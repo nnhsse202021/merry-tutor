@@ -1,28 +1,9 @@
 let express = require("express");
 
+const db = require("../db.js");
+
 let router = express.Router();
 
-const { MongoClient, ObjectID } = require('mongodb');
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let usersCollection;
-let summariesCollection;
-
-mongoClient.connect(err => {
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    summariesCollection = mongoClient.db("merry-tutor").collection("Summaries");
-})
 
 router.get("/userdata", async (req,res) => {
     //auth
@@ -35,7 +16,7 @@ router.get("/userdata", async (req,res) => {
     }
 
     //get all users
-    let users = await usersCollection.find().toArray();
+    let users = await (await db.getUserModel()).find().exec();
     
     //make users into a map + add parentEmail + parentName field
     let userMap = {};
@@ -45,7 +26,7 @@ router.get("/userdata", async (req,res) => {
     } 
 
     /* create */
-    let docs = await usersCollection.aggregate([
+    let docs = await (await db.getUserModel()).aggregate([
         {
           '$project': {
             'firstName': '$name.first',
@@ -84,7 +65,7 @@ router.get("/sessiondata", async (req,res) => {
   }
 
   //get all users
-  let users = await usersCollection.find().toArray();
+  let users = await (await db.getUserModel()).find().exec();
   
   //make users into a map + add parentEmail + parentName field
   let userMap = {};
@@ -105,7 +86,7 @@ router.get("/sessiondata", async (req,res) => {
   }
 
   /* create */
-  let docs = await summariesCollection.aggregate([
+  let docs = await (await db.getSessionModel()).aggregate([
       {
         '$project': {
           'date': {

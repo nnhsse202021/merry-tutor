@@ -1,28 +1,9 @@
 let express = require("express");
 
+const db = require("../db.js");
+
 router = express.Router();
 
-const { MongoClient, ObjectID } = require('mongodb');
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let usersCollection;
-let summariesCollection;
-
-mongoClient.connect(err => {
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    summariesCollection = mongoClient.db("merry-tutor").collection("Summaries");
-})
 
 router.get("/mytuteesummaries", async (req,res) => {
     if (!req.user) { //must be logged in to see a tutee's data
@@ -35,7 +16,7 @@ router.get("/mytuteesummaries", async (req,res) => {
 
     //only auth'd users are past this point
     let parent = req.user
-    let sessionData = await summariesCollection.find({"tutee.id": {$in: parent.children}}).sort({date: -1}).limit(100).toArray();
+    let sessionData = await (await db.getSessionModel()).find({"tutee.id": {$in: parent.children}}).sort({date: -1}).limit(100).exec();
     res.render("mytuteesummaries", {user: req.user, summaries: sessionData});
 });
 

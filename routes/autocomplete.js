@@ -1,27 +1,6 @@
 let express = require("express");
 
-// import the MongoClient class and make a client with the url to our database
-const MongoClient = require('mongodb').MongoClient;
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-// connect to the client and pass a reference to the Users collection to the global scope so we can use it later
-let usersCollection;
-mongoClient.connect(err => {
-    if (err) console.log(err);
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Auth Route Connected to Users collection");
-});
+const db = require("../db.js");
 
 router = express.Router();
 router.get("/",async (req,res) => {
@@ -33,7 +12,7 @@ router.get("/",async (req,res) => {
         '$name.last', ', ', '$name.first'
       ]
     }
-    let results = (await usersCollection.aggregate([
+    let results = (await (await db.getUserModel()).aggregate([
         {
           '$match': {
             roles: "tutee"

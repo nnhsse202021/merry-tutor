@@ -1,28 +1,9 @@
 let express = require("express");
 
+const db = require("../db.js");
+const mongoose = require('mongoose')
+
 router = express.Router();
-
-const { MongoClient, ObjectID } = require('mongodb');
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let usersCollection;
-let summariesCollection;
-
-mongoClient.connect(err => {
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    summariesCollection = mongoClient.db("merry-tutor").collection("Summaries");
-})
 
 
 router.get("/:_id", async (req,res) => {
@@ -35,10 +16,10 @@ router.get("/:_id", async (req,res) => {
     }
 
     //only auth'd users are past this point
-    let tutee = await usersCollection.findOne({_id: new ObjectID(req.params._id)});
+    let tutee = await (await db.getUserModel()).findOne({_id: new mongoose.Types.ObjectId(req.params._id)});
     tutee.name.first = tutee.name.first.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
     tutee.name.last = tutee.name.last.split(" ").map(x => x ? x[0].toUpperCase() + x.slice(1) : "").join(" ");
-    let sessionData = await summariesCollection.find({"tutee.id": req.params._id}).sort({date: -1}).limit(100).toArray();
+    let sessionData = await (await db.getSessionModel()).find({"tutee.id": req.params._id}).sort({date: -1}).limit(100).exec();
     res.render("tutee", {user: req.user, summaries: sessionData, tutee: tutee});
 });
 

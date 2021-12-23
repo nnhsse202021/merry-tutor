@@ -4,29 +4,9 @@ const CLIENT_ID = "1037005622588-7dul28gjauau6d2b3572ue7vq9cgggcc.apps.googleuse
 let {OAuth2Client} = require('google-auth-library');
 let oAuth2Client = new OAuth2Client(CLIENT_ID);
 
-// import the MongoClient class and make a client with the url to our database
-const MongoClient = require('mongodb').MongoClient;
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = require("../db.js");
 
-// connect to the client and pass a reference to the Users collection to the global scope so we can use it later
-let usersCollection;
-mongoClient.connect(err => {
-    if (err) console.log(err);
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Auth Route Connected to Users collection");
-});
-
+ 
 /*
     User Data Schema:
     {
@@ -78,15 +58,16 @@ router.post("/v1/newUser", async (req, res) => {
                 children: [],
                 graduation_year: newUserData.newChildData.gradYear
             }
-            user.children.push(String((await usersCollection.insertOne(child)).ops[0]._id));
-            await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
+            console.log(child);
+            user.children.push(String((await (await db.getUserModel()).insertOne(child)).ops[0]._id));
+            await (await db.getUserModel()).replaceOne({_id: user._id}, user, {upsert: true})
         } 
     } else { // user is a tutee
         user.graduation_year = newUserData.gradYear //update tutee with graduation year
         user.roles.push("tutee");
         // currently not storing parent email
     }
-    await usersCollection.replaceOne({_id: user._id}, user, {upsert: true})
+    await (await db.getUserModel()).replaceOne({_id: user._id}, user, {upsert: true})
     res.json(true);
 })
 /*
@@ -97,11 +78,11 @@ Matching priority:
 3. name (first and last)
 */
 async function getOrMakeUser(google_sub, email, given_name, family_name, graduation_year) {
-    if (google_sub) var user = await usersCollection.findOne({google_sub: google_sub}); //see if a user exists with their google account
-    if (!user) user = await usersCollection.findOne({email: email, google_sub: null}); //see if a user exists with their email
-    if (!user) user = await usersCollection.findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
+    if (google_sub) var user = await (await db.getUserModel()).findOne({google_sub: google_sub}); //see if a user exists with their google account
+    if (!user) user = await (await db.getUserModel()).findOne({email: email, google_sub: null}); //see if a user exists with their email
+    if (!user) user = await (await db.getUserModel()).findOne({name: {first: given_name, last: family_name}, google_sub: null}); //see if a user exists with their name
     if (!user) { //we are certain the user doesn't exist yet, let's make them from scratch
-        user = {
+        user = new (await db.getUserModel())({
             // _id generated when .insertOne is called with _id undefined
             name: {
                 first: given_name,
@@ -112,11 +93,11 @@ async function getOrMakeUser(google_sub, email, given_name, family_name, graduat
             roles: [],
             children: [],
             graduation_year: graduation_year
-        };
-        await usersCollection.insertOne(user); // insert the user into the collection
+        });
+        await user.save(); // insert the user into the collection
     } else {
         user.google_sub = google_sub;
-        usersCollection.replaceOne({_id: user._id}, user);
+        (await db.getUserModel()).replaceOne({_id: user._id}, user);
     }
     
     return user; //return the user (either newly made or updated)
@@ -124,7 +105,7 @@ async function getOrMakeUser(google_sub, email, given_name, family_name, graduat
 
 async function findIdByEmail(email) {
     // find one doc with name.first being the first name and name.last being the last name. All names are stored in lower case.
-    let userDoc = await usersCollection.findOne({email:email});
+    let userDoc = await (await db.getUserModel()).findOne({email:email});
     if (!userDoc) {
         return undefined;
     }

@@ -12,35 +12,15 @@ let bodyParser = require("body-parser");
 app.use(bodyParser.json()); //body parser for json
 app.use(bodyParser.urlencoded()); //body parser for urlencoded
 
-const { MongoClient, ObjectID } = require("mongodb");
 const { Router } = require("express");
 
-if(process.env.PRODUCTION) {
-	console.log("Running on production server...");
-	var protocol = "mongodb";
-	var mongoHost = "localhost";
-}
-else {
-	console.log("Running for development...");
-	var protocol = "mongodb+srv";
-	var mongoHost = "cluster0.kfvlj.mongodb.net";
-}
-const uri = `${protocol}://admin:${process.env.MONGO_PASSWORD}@${mongoHost}/merry-tutor?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = require("./db.js");
+const mongoose = require('mongoose')
 
-/* Middleware to attach user data to all requests */
-
-//get the users collection the same way as auth.js
-let usersCollection;
-mongoClient.connect(err => {
-    if (err) console.log(err);
-    usersCollection = mongoClient.db("merry-tutor").collection("Users");
-    console.log("Users Middleware Connected to Users collection");
-});
 
 //app.use takes a function that is added to the path of a request. When we call next() it goes to the next function in the path 
 app.use(async (req, res, next) => {
-    if(req.session.userId) req.user = await usersCollection.findOne(ObjectID(req.session.userId)); //if there is a user id, set req.user to that user data object
+    if(req.session.userId) req.user = await (await db.getUserModel()).findOne(mongoose.Types.ObjectId(req.session.userId)); //if there is a user id, set req.user to that user data object
     if (!(req.path.startsWith("/auth") || req.path.startsWith("/login")) && req.user && req.user.roles.length == 0) { //make sure that the user completes the auth flow, people without roles are bad and arent allowed to do anything
         res.redirect("/login?firstTimeFlow");
         return;

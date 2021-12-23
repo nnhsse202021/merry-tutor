@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "google-auth-library": "^6.1.6",
-    "mongodb": "^3.6.9"
+    "mongodb": "^3.6.9",
+    "mongoose": "^6.1.3"
   }
 }
