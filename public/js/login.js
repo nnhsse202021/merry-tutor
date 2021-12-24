@@ -12,12 +12,14 @@ if (new URL(window.location.href).searchParams.get("firstTimeFlow") != null) doL
 async function doLogin() { //add click listener to #google-login button which will do the login
     let newUserData = {};
     if (new URL(window.location.href).searchParams.get("firstTimeFlow") === null) {
+
         try {
             var googleUser = await gapi.auth2.getAuthInstance().signIn(); //prompt the user to sign in with google and get a GoogleUser corresponding to them
         } catch (e) {
             console.log("error with login prompt:", e); //if there is an error (eg. closed the prompt, something else went wrong) log it and don't continue
             return;
         }
+
         let res = await fetch("/auth/v1/google", { //send the googleUser's id_token which has all the data we want to the server with a POST request
             method: "POST",
             body: JSON.stringify({
@@ -28,7 +30,7 @@ async function doLogin() { //add click listener to #google-login button which wi
             }
         })
         var user = await res.json();
-        console.log(user);
+
         //check if user has roles, if they do, assume they don't need more data. If they don't, send them through the first time login flow
         if (user.roles.length != 0) {
             if(user.roles.includes("tutor")){
@@ -43,12 +45,14 @@ async function doLogin() { //add click listener to #google-login button which wi
             return;
         }
     }
+
     console.log("Second Time")
-    console.log(user)
+
     //role select screen
     showSlide("role-select");
     for (let button of document.querySelectorAll("#role-select .signin-opts button")) {
         button.addEventListener("click", () => {
+            console.log("BBBBB")
             newUserData.isParent = button.id == "role-parent"; //if they are a parent, set isParent to true, else, set it to false
                 if (newUserData.isParent) { //if they selected parent, do this
                 showSlide("parent-tutee-dialog");
@@ -125,6 +129,7 @@ function showSlide(id) {
 }
 
 async function submitNewUserData(newUserData) {
+    console.log(newUserData)
     let res = await fetch("/auth/v1/newUser", {
         method: "POST",
         body: JSON.stringify(newUserData),

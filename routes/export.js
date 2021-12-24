@@ -40,7 +40,7 @@ router.get("/userdata", async (req,res) => {
             'childrenIDs': { $cond: {if: {$in: ["parent", '$roles']}, then: '$children', else: [] }}
           }
         }
-    ]).toArray();
+    ]).exec();
 
     /* Build rows for csv */
     let rows = [["First Name", "Last Name", "Email", "Graduation Year", "isTutor", "isBoard", "isTutee", "isParent", "Children Email"]];
@@ -116,7 +116,7 @@ router.get("/sessiondata", async (req,res) => {
           "_id": 0
         }
       }
-  ]).toArray();
+  ]).exec();
 
   /* Build rows for csv */
   let rows = [["Timestamp", "Tutor Name", "Date", "Tutee Name", "Shadowing Tutor Name", "Tutee Grade Level", "Tutee School", "Parent Name", "Parent Email", "Tutee Email", "Parent Phone", "Subject", "Location", "What They Learned", "Homework", "What to do for Next Time", "Duration", "Comments for Board", "Alive Center?"]];

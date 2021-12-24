@@ -33,12 +33,17 @@ router.post("/v1/google", async (req, res) => { //login.js sends the id_token to
     let {sub, email, given_name, family_name} = ticket.getPayload(); //get the user data we care about from the id_token
     let user = await getOrMakeUser(sub, email, (given_name || "").toLowerCase(), (family_name || "").toLowerCase(), null); //call this function to get a reference to the user that's stored in the database
     req.session.userId = user._id; //sets "userId" on the session to the id of the user in the database
+    console.log("SAVING _ID", req.session.userId)
     res.status(201);
     res.json(user);
 })
 
 router.post("/v1/newUser", async (req, res) => {
-    if (!req.user || req.user.roles.length != 0) return;
+    console.log(req.user)
+    if (!req.user || req.user.roles.length != 0) {
+        console.log("user does not exist!");
+        return
+    }
     let newUserData = req.body;
     let user = req.user;
     if (newUserData.isParent) {
@@ -63,6 +68,7 @@ router.post("/v1/newUser", async (req, res) => {
             await (await db.getUserModel()).replaceOne({_id: user._id}, user, {upsert: true})
         } 
     } else { // user is a tutee
+        console.log("BBBB")
         user.graduation_year = newUserData.gradYear //update tutee with graduation year
         user.roles.push("tutee");
         // currently not storing parent email
@@ -99,7 +105,6 @@ async function getOrMakeUser(google_sub, email, given_name, family_name, graduat
         user.google_sub = google_sub;
         (await db.getUserModel()).replaceOne({_id: user._id}, user);
     }
-    
     return user; //return the user (either newly made or updated)
 }
 

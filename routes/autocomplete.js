@@ -33,7 +33,7 @@ router.get("/",async (req,res) => {
             'fullname': 1
           }
         }
-      ]).toArray()).map(x => [x.fullname, String(x._id)])
+      ]).exec()).map(x => [x.fullname, String(x._id)])
     res.json(results);
 });
 

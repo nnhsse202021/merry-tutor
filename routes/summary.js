@@ -61,7 +61,7 @@ router.post("/new", async (req, res) => {
         }
     }
     if (formObj.tutor.id && formObj.tutee.id) {    // validate for tutor_id and tutee_id
-        (await db.getSessionModel()).insertOne(formObj);
+        (await db.getSessionModel()).create(formObj);
         console.log("form submitted");
         res.redirect("../");
         return
